@@ -133,7 +133,7 @@ export const FamilyProfilesView: React.FC = () => {
           className="bg-medical-600 hover:bg-medical-700 active:scale-95 text-white font-bold px-3 py-2 rounded-2xl text-xs flex items-center space-x-1.5 shadow-soft-sm transition-all shrink-0"
         >
           <UserPlus className="w-4 h-4" />
-          <span>Add Member</span>
+          <span>{t('family.add_member_btn', '+ Add Family Member')}</span>
         </button>
       </div>
 
@@ -148,11 +148,11 @@ export const FamilyProfilesView: React.FC = () => {
               <div className="flex items-center space-x-2">
                 <h3 className="font-extrabold text-white text-base">{currentUser?.name || patientProfile.name}</h3>
                 <span className="bg-medical-500/20 text-teal-300 border border-teal-400/30 text-[10px] font-black px-2 py-0.2 rounded-full uppercase">
-                  Primary Account
+                  {t('home.myself', 'Primary Account')}
                 </span>
               </div>
               <p className="text-xs text-slate-300 mt-0.5">
-                Age: {currentUser?.age || patientProfile.age} • Phone: {currentUser?.phone || patientProfile.phone}
+                {t('family.modal_age_label', 'Age')}: {currentUser?.age || patientProfile.age} • {t('family.modal_phone_label', 'Phone')}: {currentUser?.phone || patientProfile.phone}
               </p>
               <p className="text-[11px] text-teal-200 mt-0.5 font-mono">
                 ABHA: {currentUser?.abhaDemoNumber || patientProfile.abhaId}
@@ -163,14 +163,14 @@ export const FamilyProfilesView: React.FC = () => {
 
         <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
           <span className="text-xs text-slate-300">
-            Upcoming Appointments: <strong>{getAppointmentCountForMember(currentUser?.id || patientProfile.id, currentUser?.name || patientProfile.name)}</strong>
+            {t('apt.my_appointments_title', 'Appointments')}: <strong>{getAppointmentCountForMember(currentUser?.id || patientProfile.id, currentUser?.name || patientProfile.name)}</strong>
           </span>
           <button
             onClick={() => setPatientTab('booking')}
             className="bg-teal-500 hover:bg-teal-400 text-navy-950 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center space-x-1 transition-all active:scale-95"
           >
             <CalendarPlus className="w-3.5 h-3.5" />
-            <span>Book OPD</span>
+            <span>{t('home.service_book_opd', 'Book OPD')}</span>
           </button>
         </div>
       </div>
@@ -178,7 +178,7 @@ export const FamilyProfilesView: React.FC = () => {
       {/* Family Members List */}
       <div className="space-y-3">
         <h3 className="text-xs font-bold text-navy-600 uppercase tracking-wider px-1">
-          Registered Dependents ({familyMembers.length})
+          {t('family.title', 'Family & Dependents')} ({familyMembers.length})
         </h3>
 
         {familyMembers.length === 0 ? (
@@ -253,18 +253,17 @@ export const FamilyProfilesView: React.FC = () => {
                 {/* Footer of Card: Appointments & Booking CTA */}
                 <div className="pt-3 border-t border-navy-100 flex items-center justify-between text-xs">
                   <span className="text-navy-500 font-medium">
-                    Active Tokens: <strong className="text-navy-900">{aptCount}</strong>
+                    {t('queue.live_token', 'Tokens')}: <strong className="text-navy-900">{aptCount}</strong>
                   </span>
 
                   <button
                     onClick={() => {
-                      // Navigate to booking
                       setPatientTab('booking');
                     }}
                     className="bg-medical-50 hover:bg-medical-100 text-medical-800 font-bold px-3 py-1.5 rounded-xl border border-medical-200 transition-all active:scale-95 flex items-center space-x-1"
                   >
                     <CalendarPlus className="w-3.5 h-3.5" />
-                    <span>Book for {member.name.split(' ')[0]}</span>
+                    <span>{t('family.book_appointment', 'Book for')} {member.name.split(' ')[0]}</span>
                   </button>
                 </div>
               </div>
@@ -279,7 +278,7 @@ export const FamilyProfilesView: React.FC = () => {
           <div className="bg-white rounded-3xl p-6 max-w-md w-full space-y-4 shadow-2xl relative">
             <div className="flex items-center justify-between pb-2 border-b border-navy-100">
               <h3 className="font-extrabold text-navy-900 text-base">
-                {editingMember ? 'Edit Family Profile' : 'Add New Family Member'}
+                {editingMember ? t('family.edit_member', 'Edit Family Profile') : t('family.modal_add_title', 'Add New Family Member')}
               </h3>
               <button 
                 onClick={() => setIsAddModalOpen(false)}

@@ -7,13 +7,16 @@ import {
   MessageSquareHeart, 
   BarChart3, 
   CheckCircle2, 
-  Clock,
-  Sparkles,
-  ArrowRight
+  Clock, 
+  Sparkles, 
+  ArrowRight 
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
+import { translateHospitalName, translateRole } from '../../i18n/translateHelpers';
 
 export const StaffOverviewDesk: React.FC = () => {
+  const { t } = useTranslation();
   const { 
     currentStaffUser, 
     selectedHospital, 
@@ -39,14 +42,14 @@ export const StaffOverviewDesk: React.FC = () => {
         <div>
           <div className="flex items-center space-x-2">
             <span className="text-xs font-bold text-teal-700 uppercase tracking-wider">
-              Hospital Operations Administration
+              {t('staff.sidebar_title', 'Hospital Operations')}
             </span>
             <span className="bg-navy-900 text-teal-300 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
-              {currentStaffUser.title}
+              {translateRole(currentStaffUser.title)}
             </span>
           </div>
           <h2 className="text-2xl font-black text-navy-950 mt-1">
-            {selectedHospital.name.split('(')[0]}
+            {translateHospitalName(selectedHospital.name.split('(')[0])}
           </h2>
           <p className="text-xs text-navy-500 mt-0.5">
             Administrative Command & Resource Intelligence Bureau • Shift Director: {currentStaffUser.name}
@@ -66,10 +69,10 @@ export const StaffOverviewDesk: React.FC = () => {
           className="bg-white p-5 rounded-3xl border border-navy-200/80 hover:border-teal-400 text-left shadow-soft-xs transition-all group"
         >
           <div className="flex items-center justify-between text-navy-400 mb-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-navy-600">Active OPD Queue</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-navy-600">{t('staff.stat_total_queue', 'Active OPD Queue')}</span>
             <Users className="w-4 h-4 text-teal-600 group-hover:scale-110 transition-transform" />
           </div>
-          <div className="text-2xl font-black text-navy-950">{waitingTokens} Waiting</div>
+          <div className="text-2xl font-black text-navy-950">{waitingTokens} {t('status.waiting', 'Waiting')}</div>
           <p className="text-[11px] text-teal-700 font-semibold mt-1">Across 8 clinical departments</p>
         </button>
 
@@ -78,11 +81,11 @@ export const StaffOverviewDesk: React.FC = () => {
           className="bg-white p-5 rounded-3xl border border-navy-200/80 hover:border-teal-400 text-left shadow-soft-xs transition-all group"
         >
           <div className="flex items-center justify-between text-navy-400 mb-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-navy-600">Ward Occupancy</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-navy-600">{t('staff.stat_bed_occupancy', 'Bed Occupancy Rate')}</span>
             <BedDouble className="w-4 h-4 text-emerald-600 group-hover:scale-110 transition-transform" />
           </div>
-          <div className="text-2xl font-black text-emerald-700">{occupancyPercent}% Occupied</div>
-          <p className="text-[11px] text-slate-500 mt-1">{availableBeds} beds currently free</p>
+          <div className="text-2xl font-black text-emerald-700">{occupancyPercent}% {t('beds.occupied', 'Occupied')}</div>
+          <p className="text-[11px] text-slate-500 mt-1">{availableBeds} {t('beds.available', 'beds free')}</p>
         </button>
 
         <button
@@ -90,7 +93,7 @@ export const StaffOverviewDesk: React.FC = () => {
           className="bg-white p-5 rounded-3xl border border-navy-200/80 hover:border-rose-400 text-left shadow-soft-xs transition-all group"
         >
           <div className="flex items-center justify-between text-navy-400 mb-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-rose-700">108 Casualty</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-rose-700">{t('staff.stat_emergency_cases', '108 Casualty Alerts')}</span>
             <ShieldAlert className="w-4 h-4 text-rose-600 group-hover:scale-110 transition-transform" />
           </div>
           <div className="text-2xl font-black text-rose-700">{criticalEmergencies} Active Dispatches</div>
@@ -102,7 +105,7 @@ export const StaffOverviewDesk: React.FC = () => {
           className="bg-white p-5 rounded-3xl border border-navy-200/80 hover:border-amber-400 text-left shadow-soft-xs transition-all group"
         >
           <div className="flex items-center justify-between text-navy-400 mb-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-700">CivicCare Redressal</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-amber-700">{t('staff.nav_civiccare', 'CivicCare Redressal')}</span>
             <MessageSquareHeart className="w-4 h-4 text-amber-600 group-hover:scale-110 transition-transform" />
           </div>
           <div className="text-2xl font-black text-amber-700">{pendingGrievances} Pending</div>

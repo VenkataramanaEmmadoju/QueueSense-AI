@@ -1,8 +1,10 @@
 import React from 'react';
 import { WifiOff, AlertTriangle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
 
 export const OfflineBanner: React.FC = () => {
+  const { t } = useTranslation();
   const { isOnline } = useApp();
 
   if (isOnline) return null;
@@ -12,7 +14,8 @@ export const OfflineBanner: React.FC = () => {
       <div className="flex items-center space-x-2">
         <WifiOff className="w-4 h-4 text-navy-950 shrink-0 animate-pulse" />
         <span>
-          <strong>Offline Mode Active:</strong> Static views cached safely. Live bed reservation & real-time queue tracking are temporarily paused.
+          <strong>{t('common.offline', 'Offline')}: </strong>
+          {t('common.offline_alert', 'Static views cached safely. Live bed reservation & real-time queue tracking are temporarily paused.')}
         </span>
       </div>
       <span className="text-[10px] bg-amber-600/30 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">

@@ -8,17 +8,19 @@ import {
   PhoneCall, 
   AlertTriangle 
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
 
 export const EmergencyTriageDesk: React.FC = () => {
+  const { t } = useTranslation();
   const { emergencyAlerts, updateEmergencyStatus, addToast } = useApp();
 
   return (
     <div className="space-y-4">
       <div>
         <span className="text-[10px] font-black uppercase text-rose-700 tracking-wider">TRAUMA BAY & CASUALTY</span>
-        <h2 className="text-xl font-black text-navy-900 tracking-tight">Emergency 108 Operations Desk</h2>
-        <p className="text-xs text-navy-500">Live ambulance tracking and casualty trauma bed pre-allocation</p>
+        <h2 className="text-xl font-black text-navy-900 tracking-tight">{t('staff.nav_emergency', 'Emergency 108 Operations Desk')}</h2>
+        <p className="text-xs text-navy-500">{t('emg.subtitle', 'Live ambulance tracking and casualty trauma bed pre-allocation')}</p>
       </div>
 
       <div className="space-y-3">
@@ -62,7 +64,7 @@ export const EmergencyTriageDesk: React.FC = () => {
                     Ambulance: <span className="text-rose-700">{emg.ambulanceId || '108-ALS'}</span>
                   </div>
                   <div className="text-sm font-extrabold text-rose-600 mt-0.5">
-                    {isEnRoute ? `ETA: ~${emg.etaMinutes} mins` : isArrived ? 'Arrived at Casualty' : 'Admitted'}
+                    {isEnRoute ? `${t('emg.eta_label', 'ETA')}: ~${emg.etaMinutes} ${t('home.mins', 'mins')}` : isArrived ? 'Arrived at Casualty' : t('staff.admit_patient', 'Admitted')}
                   </div>
                 </div>
               </div>

@@ -9,21 +9,24 @@ import {
   Clock, 
   Search, 
   Filter, 
-  Users,
-  AlertCircle,
-  Sparkles,
-  ChevronRight
+  Users, 
+  AlertCircle, 
+  Sparkles, 
+  ChevronRight 
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
+import { translateDepartment } from '../../i18n/translateHelpers';
 
 export const TokenQueueDesk: React.FC = () => {
+  const { t } = useTranslation();
   const { 
     tokens, 
     callNextToken, 
     updateTokenStatus, 
     departments, 
-    currentStaffUser,
-    addToast
+    currentStaffUser, 
+    addToast 
   } = useApp();
 
   const [selectedDeptFilter, setSelectedDeptFilter] = useState<string>('All');
@@ -45,7 +48,7 @@ export const TokenQueueDesk: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <span className="text-[10px] font-black uppercase text-medical-700 tracking-wider">CLINICAL OPD WORKFLOW</span>
-          <h2 className="text-xl font-black text-navy-900 tracking-tight">OPD Token Queue Desk</h2>
+          <h2 className="text-xl font-black text-navy-900 tracking-tight">{t('staff.nav_tokens', 'OPD Token Queue Desk')}</h2>
         </div>
 
         {/* Quick Call Next Button */}
@@ -58,7 +61,7 @@ export const TokenQueueDesk: React.FC = () => {
             className="bg-medical-600 hover:bg-medical-700 active:scale-95 text-white font-bold px-4 py-2 rounded-2xl text-xs flex items-center space-x-1.5 shadow-soft-sm transition-all"
           >
             <Ticket className="w-4 h-4" />
-            <span>Call Next Patient</span>
+            <span>{t('doctor.call_next_patient', 'Call Next Patient')}</span>
           </button>
         </div>
       </div>
@@ -76,7 +79,7 @@ export const TokenQueueDesk: React.FC = () => {
                   : 'bg-white border border-navy-200 text-navy-600 hover:bg-navy-50'
               }`}
             >
-              {dept === 'All' ? 'All Departments' : dept}
+              {dept === 'All' ? t('common.all', 'All Departments') : dept}
             </button>
           ))}
         </div>
@@ -85,7 +88,7 @@ export const TokenQueueDesk: React.FC = () => {
           <Search className="w-3.5 h-3.5 text-navy-400 absolute left-3 top-3" />
           <input
             type="text"
-            placeholder="Search token # or patient..."
+            placeholder={t('common.search', 'Search token # or patient...')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full text-xs pl-8 pr-3 py-2 rounded-xl border border-navy-200 bg-white focus:outline-none focus:ring-1 focus:ring-medical-600"

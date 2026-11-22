@@ -7,10 +7,13 @@ import {
   Send, 
   AlertCircle 
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
 import { CivicCareGrievance } from '../../types';
+import { translateStatus } from '../../i18n/translateHelpers';
 
 export const CivicCareDesk: React.FC = () => {
+  const { t } = useTranslation();
   const { grievances, updateGrievanceStatus, currentStaffUser, addToast } = useApp();
   const [activeEditingId, setActiveEditingId] = useState<string | null>(null);
   const [resolutionNote, setResolutionNote] = useState<string>('');
@@ -25,7 +28,7 @@ export const CivicCareDesk: React.FC = () => {
     <div className="space-y-4">
       <div>
         <span className="text-[10px] font-black uppercase text-amber-700 tracking-wider">HOSPITAL ADMINISTRATIVE DESK</span>
-        <h2 className="text-xl font-black text-navy-900 tracking-tight">CivicCare Grievance Redressal</h2>
+        <h2 className="text-xl font-black text-navy-900 tracking-tight">{t('staff.nav_civiccare', 'CivicCare Grievance Redressal')}</h2>
         <p className="text-xs text-navy-500">Citizen feedback, sanitation tickets and administrative action logs</p>
       </div>
 
@@ -62,7 +65,7 @@ export const CivicCareDesk: React.FC = () => {
                   isUnderReview ? 'bg-amber-100 text-amber-800' :
                   'bg-navy-100 text-navy-700'
                 }`}>
-                  {g.status.replace('_', ' ')}
+                  {translateStatus(g.status)}
                 </span>
               </div>
 
@@ -95,19 +98,19 @@ export const CivicCareDesk: React.FC = () => {
                       onClick={() => handleUpdateStatus(g, 'action_taken')}
                       className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-3 rounded-xl text-xs"
                     >
-                      Mark Action Taken
+                      {t('staff.update_status', 'Mark Action Taken')}
                     </button>
                     <button
                       onClick={() => handleUpdateStatus(g, 'resolved')}
                       className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 px-3 rounded-xl text-xs"
                     >
-                      Mark Fully Resolved
+                      {t('staff.mark_resolved', 'Mark Fully Resolved')}
                     </button>
                     <button
                       onClick={() => setActiveEditingId(null)}
                       className="text-navy-500 font-bold hover:text-navy-800 text-xs px-2"
                     >
-                      Cancel
+                      {t('common.cancel', 'Cancel')}
                     </button>
                   </div>
                 </div>
@@ -123,7 +126,7 @@ export const CivicCareDesk: React.FC = () => {
                     }}
                     className="bg-medical-50 hover:bg-medical-100 text-medical-800 border border-medical-200 font-semibold px-3 py-1.5 rounded-xl text-xs transition-all active:scale-95"
                   >
-                    Update Resolution Status
+                    {t('staff.update_status', 'Update Resolution Status')}
                   </button>
                 </div>
               )}

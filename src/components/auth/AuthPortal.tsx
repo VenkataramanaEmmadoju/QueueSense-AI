@@ -20,6 +20,7 @@ import { useApp } from '../../context/AppContext';
 import { DEMO_CREDENTIALS } from '../../services/authService';
 import { DEMO_STAFF_USERS } from '../../data/syntheticData';
 import { BrandLogo } from '../common/BrandLogo';
+import { LanguageSwitcher } from '../common/LanguageSwitcher';
 
 type SelectedRole = 'patient' | 'doctor' | 'staff';
 
@@ -147,29 +148,11 @@ export const AuthPortal: React.FC = () => {
           className="bg-rose-50 hover:bg-rose-100 active:scale-95 text-rose-700 border border-rose-200/80 px-3 py-1.5 rounded-full text-xs font-bold flex items-center space-x-1.5 transition-all shadow-soft-xs"
         >
           <PhoneCall className="w-3.5 h-3.5 text-rose-600 animate-pulse" />
-          <span>Call 112 Emergency</span>
+          <span>{t('app.emergency_112')}</span>
         </button>
 
-        {/* Language selector */}
-        <div className="flex items-center bg-white/80 backdrop-blur-sm border border-navy-200/70 p-0.5 rounded-xl text-xs font-semibold shadow-soft-xs">
-          {(['en', 'te', 'hi'] as const).map(lang => (
-            <button
-              key={lang}
-              type="button"
-              onClick={() => {
-                i18n.changeLanguage(lang);
-                localStorage.setItem('queuesense_preferred_lang', lang);
-              }}
-              className={`px-2.5 py-1 rounded-lg transition-all uppercase text-[11px] ${
-                i18n.language === lang 
-                  ? 'bg-medical-600 text-white font-extrabold shadow-soft-xs' 
-                  : 'text-navy-600 hover:text-navy-900'
-              }`}
-            >
-              {lang === 'te' ? 'తెలుగు' : lang === 'hi' ? 'हिंदी' : 'EN'}
-            </button>
-          ))}
-        </div>
+        {/* Centralized Language selector */}
+        <LanguageSwitcher />
       </header>
 
       {/* Main Unified Login Card */}
@@ -268,14 +251,14 @@ export const AuthPortal: React.FC = () => {
                 onClick={() => { setAuthMode('login'); setError(''); }}
                 className={`pb-1 transition-all ${authMode === 'login' ? 'text-medical-700 border-b-2 border-medical-600 font-black' : 'hover:text-navy-800'}`}
               >
-                Sign In
+                {t('auth.sign_in')}
               </button>
               <button
                 type="button"
                 onClick={() => { setAuthMode('signup'); setError(''); }}
                 className={`pb-1 transition-all ${authMode === 'signup' ? 'text-medical-700 border-b-2 border-medical-600 font-black' : 'hover:text-navy-800'}`}
               >
-                New Patient Registration
+                {t('auth.switch_patient_signup')}
               </button>
             </div>
           )}
@@ -285,9 +268,9 @@ export const AuthPortal: React.FC = () => {
             <div className="bg-navy-50 p-3 rounded-2xl border border-navy-200/80 space-y-1.5">
               <div className="flex items-center justify-between">
                 <label className="text-[11px] font-bold text-navy-700 uppercase tracking-wider">
-                  Staff Subrole Profile
+                  {t('auth.choose_staff_role')}
                 </label>
-                <span className="text-[10px] text-teal-700 font-semibold">Test Fixture</span>
+                <span className="text-[10px] text-teal-700 font-semibold">Demo Role</span>
               </div>
               <select
                 value={selectedStaffSubrole}
@@ -296,7 +279,7 @@ export const AuthPortal: React.FC = () => {
               >
                 {DEMO_STAFF_USERS.map((u) => (
                   <option key={u.id} value={u.email}>
-                    {u.avatar} {u.name} — {u.title} ({u.role.replace('_', ' ').toUpperCase()})
+                    {u.avatar} {u.name} — {u.title}
                   </option>
                 ))}
               </select>
@@ -320,13 +303,13 @@ export const AuthPortal: React.FC = () => {
             <form onSubmit={handleLoginSubmit} className="space-y-3.5">
               <div>
                 <label className="text-xs font-bold text-navy-700 uppercase tracking-wider block mb-1">
-                  {role === 'patient' ? 'Email or Mobile Number' : role === 'doctor' ? 'Official Doctor ID / Email' : 'Staff ID / Official Email'}
+                  {role === 'patient' ? t('auth.email_or_mobile') : role === 'doctor' ? t('auth.official_doctor_id') : t('auth.official_staff_id')}
                 </label>
                 <input
                   type="text"
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
-                  placeholder={role === 'patient' ? 'patient@queuesense.demo' : role === 'doctor' ? 'doctor@queuesense.demo' : 'staff@queuesense.demo'}
+                  placeholder={role === 'patient' ? t('auth.email_or_mobile_placeholder') : role === 'doctor' ? t('auth.doctor_id_placeholder') : t('auth.staff_id_placeholder')}
                   required
                   className="w-full text-xs p-3 rounded-xl border border-navy-200 focus:outline-none focus:ring-1 focus:ring-medical-600 bg-navy-50/50 text-navy-900 font-medium transition-all"
                 />
@@ -335,7 +318,7 @@ export const AuthPortal: React.FC = () => {
               <div>
                 <div className="flex items-center justify-between mb-1">
                   <label className="text-xs font-bold text-navy-700 uppercase tracking-wider">
-                    Password
+                    {t('auth.password')}
                   </label>
                   {role === 'patient' && (
                     <button
@@ -343,7 +326,7 @@ export const AuthPortal: React.FC = () => {
                       onClick={() => { setShowForgotPassword(true); setForgotSent(false); }}
                       className="text-[11px] text-medical-700 hover:text-medical-800 font-semibold"
                     >
-                      Forgot?
+                      {t('auth.forgot_password')}
                     </button>
                   )}
                 </div>
@@ -377,7 +360,7 @@ export const AuthPortal: React.FC = () => {
                 ) : (
                   <>
                     <span>
-                      {role === 'patient' ? 'Sign In as Patient' : role === 'doctor' ? 'Sign In to Clinical Desk' : 'Sign In to Operations Console'}
+                      {role === 'patient' ? t('auth.sign_in_as_patient') : role === 'doctor' ? t('auth.sign_in_as_doctor') : t('auth.sign_in_as_staff')}
                     </span>
                     <ArrowRight className="w-4 h-4" />
                   </>
@@ -389,13 +372,13 @@ export const AuthPortal: React.FC = () => {
             <form onSubmit={handleSignupSubmit} className="space-y-3">
               <div>
                 <label className="text-xs font-bold text-navy-700 uppercase tracking-wider block mb-1">
-                  Full Name *
+                  {t('auth.full_name')} *
                 </label>
                 <input
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  placeholder="e.g. Ramesh Kumar"
+                  placeholder={t('auth.full_name_placeholder')}
                   required
                   className="w-full text-xs p-2.5 rounded-xl border border-navy-200 focus:outline-none focus:ring-1 focus:ring-medical-600 bg-navy-50/50"
                 />
@@ -404,26 +387,26 @@ export const AuthPortal: React.FC = () => {
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="text-xs font-bold text-navy-700 uppercase tracking-wider block mb-1">
-                    Mobile Number *
+                    {t('auth.mobile_phone')} *
                   </label>
                   <input
                     type="tel"
                     value={mobile}
                     onChange={(e) => setMobile(e.target.value)}
-                    placeholder="98490 00000"
+                    placeholder={t('auth.mobile_placeholder')}
                     required
                     className="w-full text-xs p-2.5 rounded-xl border border-navy-200 focus:outline-none focus:ring-1 focus:ring-medical-600 bg-navy-50/50"
                   />
                 </div>
                 <div>
                   <label className="text-xs font-bold text-navy-700 uppercase tracking-wider block mb-1">
-                    Age
+                    {t('auth.age')}
                   </label>
                   <input
                     type="number"
                     value={age}
                     onChange={(e) => setAge(e.target.value)}
-                    placeholder="28"
+                    placeholder={t('auth.age_placeholder')}
                     className="w-full text-xs p-2.5 rounded-xl border border-navy-200 focus:outline-none focus:ring-1 focus:ring-medical-600 bg-navy-50/50"
                   />
                 </div>
@@ -431,13 +414,13 @@ export const AuthPortal: React.FC = () => {
 
               <div>
                 <label className="text-xs font-bold text-navy-700 uppercase tracking-wider block mb-1">
-                  Email (Optional)
+                  {t('auth.email')}
                 </label>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="ramesh@example.com"
+                  placeholder={t('auth.email_placeholder')}
                   className="w-full text-xs p-2.5 rounded-xl border border-navy-200 focus:outline-none focus:ring-1 focus:ring-medical-600 bg-navy-50/50"
                 />
               </div>
@@ -445,7 +428,7 @@ export const AuthPortal: React.FC = () => {
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="text-xs font-bold text-navy-700 uppercase tracking-wider block mb-1">
-                    Password *
+                    {t('auth.create_password')} *
                   </label>
                   <input
                     type="password"
@@ -458,7 +441,7 @@ export const AuthPortal: React.FC = () => {
                 </div>
                 <div>
                   <label className="text-xs font-bold text-navy-700 uppercase tracking-wider block mb-1">
-                    Confirm *
+                    {t('auth.confirm_password')} *
                   </label>
                   <input
                     type="password"
@@ -480,7 +463,7 @@ export const AuthPortal: React.FC = () => {
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 ) : (
                   <>
-                    <span>Create Free Patient Account</span>
+                    <span>{t('auth.create_free_account')}</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
@@ -506,21 +489,21 @@ export const AuthPortal: React.FC = () => {
       {showForgotPassword && (
         <div className="fixed inset-0 z-50 bg-navy-950/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl max-w-sm w-full p-6 space-y-4 border border-navy-200 shadow-soft-xl animate-in zoom-in-95">
-            <h3 className="font-extrabold text-navy-900 text-base">Reset Password (Simulated)</h3>
+            <h3 className="font-extrabold text-navy-900 text-base">{t('auth.reset_password')}</h3>
             <p className="text-xs text-navy-600">
-              Enter your registered mobile number or email. In this prototype, a reset link simulation will be triggered.
+              {t('auth.reset_password_desc')}
             </p>
             {forgotSent ? (
               <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-3 rounded-2xl text-xs flex items-center space-x-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Simulated reset link sent! You may sign in with password: Patient@123</span>
+                <span>{t('auth.reset_sent_msg')}</span>
               </div>
             ) : (
               <input
                 type="text"
                 value={forgotInput}
                 onChange={(e) => setForgotInput(e.target.value)}
-                placeholder="Enter mobile or email"
+                placeholder={t('auth.email_or_mobile_placeholder')}
                 className="w-full text-xs p-3 rounded-xl border border-navy-200 bg-navy-50/50"
               />
             )}
@@ -530,7 +513,7 @@ export const AuthPortal: React.FC = () => {
                 onClick={() => setShowForgotPassword(false)}
                 className="flex-1 py-2 rounded-xl border border-navy-200 text-xs font-semibold text-navy-700 hover:bg-navy-50"
               >
-                Close
+                {t('auth.close')}
               </button>
               {!forgotSent && (
                 <button
@@ -538,7 +521,7 @@ export const AuthPortal: React.FC = () => {
                   onClick={() => setForgotSent(true)}
                   className="flex-1 py-2 rounded-xl bg-medical-600 text-white text-xs font-bold hover:bg-medical-700"
                 >
-                  Send OTP
+                  {t('auth.send_reset_link')}
                 </button>
               )}
             </div>
@@ -555,11 +538,11 @@ export const AuthPortal: React.FC = () => {
             </div>
             <div className="text-center">
               <span className="text-[10px] bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded-full uppercase">
-                Official Telangana Emergency
+                {t('app.grid_badge')}
               </span>
-              <h3 className="font-black text-navy-950 text-xl mt-1">Dial 112 / 108 Emergency</h3>
+              <h3 className="font-black text-navy-950 text-xl mt-1">{t('app.emergency_112')}</h3>
               <p className="text-xs text-navy-600 mt-1">
-                Emergency medical and ambulance services are available 24/7 across Telangana without requiring login.
+                {t('app.subtagline')}
               </p>
             </div>
             <div className="space-y-2 pt-2">
@@ -567,20 +550,20 @@ export const AuthPortal: React.FC = () => {
                 href="tel:112"
                 className="w-full bg-rose-600 hover:bg-rose-700 text-white font-black py-3 rounded-xl text-center block text-sm transition-all shadow-soft-md shadow-rose-600/30 active:scale-95"
               >
-                📞 Call 112 Emergency Dispatch Now
+                📞 {t('app.emergency_112')}
               </a>
               <a
                 href="tel:108"
                 className="w-full bg-navy-900 hover:bg-navy-800 text-white font-bold py-2.5 rounded-xl text-center block text-xs transition-all active:scale-95"
               >
-                🚑 Call 108 Free Medical Ambulance
+                🚑 {t('app.emergency_108')}
               </a>
               <button
                 type="button"
                 onClick={() => setShowEmergencyModal(false)}
                 className="w-full py-2 text-xs font-bold text-navy-500 hover:text-navy-800"
               >
-                Return to Login
+                {t('common.close')}
               </button>
             </div>
           </div>

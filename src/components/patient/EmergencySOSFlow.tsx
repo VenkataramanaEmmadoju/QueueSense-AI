@@ -14,9 +14,12 @@ import {
   Wind,
   Baby
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
+import { translateHospitalName } from '../../i18n/translateHelpers';
 
 export const EmergencySOSFlow: React.FC = () => {
+  const { t } = useTranslation();
   const { 
     selectedHospital, 
     selectedMandal, 
@@ -33,10 +36,10 @@ export const EmergencySOSFlow: React.FC = () => {
   const [isDispatched, setIsDispatched] = useState(false);
 
   const emergencyTypes = [
-    { label: 'Chest Pain / Cardiac', icon: HeartCrack, desc: 'Suspected heart attack, angina, fainting' },
-    { label: 'Road Accident / Trauma', icon: Car, desc: 'Severe bleeding, fractures, vehicle crash' },
-    { label: 'Respiratory Distress', icon: Wind, desc: 'Severe asthma, choking, low oxygen SpO2' },
-    { label: 'Maternity Emergency', icon: Baby, desc: 'Active labor pains, neonatal distress' }
+    { label: t('emg.type_cardiac', 'Chest Pain / Cardiac'), icon: HeartCrack, desc: 'Suspected heart attack, angina, fainting' },
+    { label: t('emg.type_trauma', 'Road Accident / Trauma'), icon: Car, desc: 'Severe bleeding, fractures, vehicle crash' },
+    { label: t('emg.type_respiratory', 'Respiratory Distress'), icon: Wind, desc: 'Severe asthma, choking, low oxygen SpO2' },
+    { label: t('emg.type_other', 'Maternity / Critical Emergency'), icon: Baby, desc: 'Active labor pains, neonatal distress' }
   ];
 
   const handleTriggerSOS = () => {
@@ -58,11 +61,11 @@ export const EmergencySOSFlow: React.FC = () => {
           className="flex items-center space-x-1.5 text-navy-600 hover:text-navy-950 text-xs font-semibold p-2 rounded-xl hover:bg-navy-100 transition-all"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Home</span>
+          <span>{t('common.back', 'Back to Home')}</span>
         </button>
 
         <span className="text-[10px] bg-rose-100 text-rose-800 font-extrabold uppercase px-2.5 py-1 rounded-full border border-rose-200 animate-pulse">
-          Telangana 108 Emergency Network
+          {t('home.service_emergency', 'Telangana 108 Emergency Network')}
         </span>
       </div>
 
@@ -70,7 +73,8 @@ export const EmergencySOSFlow: React.FC = () => {
       <div className="bg-rose-50 border border-rose-200/80 rounded-2xl p-3 flex items-start space-x-2 text-xs text-rose-900 shadow-soft-sm">
         <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
         <div className="leading-snug">
-          <strong className="font-bold">Real Life Emergency Warning:</strong> This is a synthetic simulation for prototype testing. In a real medical emergency in Telangana, dial <strong>108</strong> (Ambulance) or <strong>102</strong> (Maternal) directly.
+          <strong className="font-bold">{t('common.warning', 'Emergency Warning')}: </strong>
+          {t('emg.subtitle', 'Synthetic prototype simulation. In real emergency dial 108 directly.')}
         </div>
       </div>
 
@@ -79,9 +83,9 @@ export const EmergencySOSFlow: React.FC = () => {
         <div className="space-y-4 animate-in fade-in">
           <div className="bg-gradient-to-br from-rose-600 to-rose-800 text-white rounded-3xl p-5 shadow-soft-xl text-center relative overflow-hidden">
             <ShieldAlert className="w-14 h-14 mx-auto text-rose-100 animate-pulse" />
-            <h2 className="text-2xl font-black mt-2 tracking-tight">Emergency Assistance</h2>
+            <h2 className="text-2xl font-black mt-2 tracking-tight">{t('emg.title', 'Emergency Assistance')}</h2>
             <p className="text-xs text-rose-100/90 max-w-xs mx-auto mt-1">
-              Instant 108 Advanced Life Support (ALS) Ambulance Dispatch & Hospital Casualty Notification
+              {t('emg.subtitle', 'Instant 108 Advanced Life Support (ALS) Ambulance Dispatch')}
             </p>
 
             {/* Direct Dial 108 Button */}
@@ -91,7 +95,7 @@ export const EmergencySOSFlow: React.FC = () => {
                 className="bg-white text-rose-700 hover:bg-rose-50 font-black px-6 py-2.5 rounded-full text-sm inline-flex items-center space-x-2 shadow-lg active:scale-95 transition-transform"
               >
                 <PhoneCall className="w-4 h-4" />
-                <span>One-Tap Dial 108</span>
+                <span>{t('emg.call_108_btn', 'One-Tap Dial 108')}</span>
               </a>
             </div>
           </div>
@@ -99,7 +103,7 @@ export const EmergencySOSFlow: React.FC = () => {
           {/* Condition Selector */}
           <div>
             <label className="text-xs font-bold text-navy-700 uppercase tracking-wider block mb-2">
-              Select Emergency Condition
+              {t('emg.emergency_type', 'Select Emergency Condition')}
             </label>
             <div className="grid grid-cols-2 gap-2.5">
               {emergencyTypes.map((item) => {
@@ -128,7 +132,7 @@ export const EmergencySOSFlow: React.FC = () => {
           {/* Location details */}
           <div className="bg-white border border-navy-200/80 rounded-3xl p-4 shadow-soft-sm space-y-2">
             <label className="text-xs font-bold text-navy-700 uppercase tracking-wider block">
-              Pickup Location & Landmark
+              {t('emg.patient_location', 'Pickup Location & Landmark')}
             </label>
             <div className="flex items-center space-x-2 bg-navy-50 p-2.5 rounded-xl border border-navy-200">
               <MapPin className="w-4 h-4 text-rose-600 shrink-0" />
@@ -141,7 +145,7 @@ export const EmergencySOSFlow: React.FC = () => {
               />
             </div>
             <p className="text-[11px] text-navy-500">
-              Hospital Casualty Pre-Alert will be sent to: <strong className="text-navy-900">{selectedHospital.name.split('(')[0]}</strong>
+              Hospital Casualty Pre-Alert: <strong className="text-navy-900">{translateHospitalName(selectedHospital.name.split('(')[0])}</strong>
             </p>
           </div>
 
@@ -151,7 +155,7 @@ export const EmergencySOSFlow: React.FC = () => {
             className="w-full bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 active:scale-[0.98] text-white font-black py-4 px-4 rounded-3xl text-sm transition-all shadow-soft-lg flex items-center justify-center space-x-2"
           >
             <ShieldAlert className="w-5 h-5 animate-pulse" />
-            <span>DISPATCH 108 AMBULANCE NOW</span>
+            <span>{t('emg.dispatch_ambulance', 'DISPATCH 108 AMBULANCE NOW')}</span>
           </button>
         </div>
       ) : (
@@ -162,9 +166,9 @@ export const EmergencySOSFlow: React.FC = () => {
               <Activity className="w-8 h-8" />
             </div>
             <span className="text-[11px] bg-rose-50 text-rose-700 font-bold px-3 py-1 rounded-full uppercase border border-rose-200">
-              108 AMBULANCE EN ROUTE
+              {t('emg.sos_active_title', '108 AMBULANCE EN ROUTE')}
             </span>
-            <h2 className="text-2xl font-black text-navy-950 mt-2">ETA: 6 - 8 Minutes</h2>
+            <h2 className="text-2xl font-black text-navy-950 mt-2">{t('emg.eta_label', 'ETA')}: {t('emg.eta_time', '6 - 8 Minutes')}</h2>
             <p className="text-xs text-navy-500 mt-1">
               Ambulance Unit <strong className="text-navy-900">TS-108-EMG-09</strong> assigned to your location.
             </p>
@@ -196,14 +200,14 @@ export const EmergencySOSFlow: React.FC = () => {
                 className="bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl flex items-center justify-center space-x-1.5"
               >
                 <PhoneCall className="w-4 h-4" />
-                <span>Call Driver</span>
+                <span>{t('emg.call_108_btn', 'Call Driver')}</span>
               </a>
               <a
                 href={`tel:${selectedHospital.emergencyHelpline}`}
                 className="bg-navy-100 hover:bg-navy-200 text-navy-800 font-semibold py-2.5 rounded-xl flex items-center justify-center space-x-1.5"
               >
                 <PhoneCall className="w-4 h-4" />
-                <span>Call Casualty</span>
+                <span>{t('hosp.call_hospital', 'Call Casualty')}</span>
               </a>
             </div>
           </div>
@@ -212,7 +216,7 @@ export const EmergencySOSFlow: React.FC = () => {
             onClick={() => setIsDispatched(false)}
             className="w-full bg-navy-100 hover:bg-navy-200 text-navy-800 font-semibold py-2.5 rounded-2xl text-xs transition-colors"
           >
-            Reset SOS State
+            {t('emg.cancel_sos', 'Reset SOS State')}
           </button>
         </div>
       )}

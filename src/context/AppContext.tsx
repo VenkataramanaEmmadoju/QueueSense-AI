@@ -194,7 +194,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [authSession, setAuthSession] = useState<AuthSession>(() => StorageService.getSession());
   const [currentUser, setCurrentUser] = useState<StoredUser | null>(() => {
     const s = StorageService.getSession();
-    return s.isAuthenticated && s.role === 'patient' ? (s.user as StoredUser) : null;
+    if (s.isAuthenticated && s.role === 'patient') {
+      const user = s.user as StoredUser;
+      if (user && user.name === 'Venkataramana Santhu') {
+        user.name = 'Rahul Kumar';
+      }
+      return user;
+    }
+    return null;
   });
 
   const [currentDoctorUser, setCurrentDoctorUser] = useState<DoctorUser>(() => {
@@ -287,7 +294,13 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [selectedHospital, setSelectedHospital] = useState<Hospital>(PRIMARY_DEMO_HOSPITAL);
 
   // Patient Profile & Caregiver
-  const [patientProfile, setPatientProfile] = useState<PatientProfile>(DEMO_DEFAULT_PATIENT);
+  const [patientProfile, setPatientProfile] = useState<PatientProfile>(() => {
+    const initial = { ...DEMO_DEFAULT_PATIENT };
+    if (initial.name === 'Venkataramana Santhu') {
+      initial.name = 'Rahul Kumar';
+    }
+    return initial;
+  });
   const [activePatientIdentity, setActivePatientIdentity] = useState<'self' | CaregiverProfile>('self');
 
   // Family Members from Storage

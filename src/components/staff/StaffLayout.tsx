@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   Building2, 
   Ticket, 
@@ -20,6 +21,8 @@ import {
 } from 'lucide-react';
 import { useApp, StaffTab } from '../../context/AppContext';
 import { BrandLogo } from '../common/BrandLogo';
+import { LanguageSwitcher } from '../common/LanguageSwitcher';
+import { translateRole, translateDepartment } from '../../i18n/translateHelpers';
 import { StaffOverviewDesk } from './StaffOverviewDesk';
 import { TokenQueueDesk } from './TokenQueueDesk';
 import { PatientRegistrationDesk } from './PatientRegistrationDesk';
@@ -34,6 +37,7 @@ import { SanitationTasksDesk } from './SanitationTasksDesk';
 import { MaintenanceTasksDesk } from './MaintenanceTasksDesk';
 
 export const StaffLayout: React.FC = () => {
+  const { t } = useTranslation();
   const { 
     currentStaffUser, 
     logout, 
@@ -56,18 +60,18 @@ export const StaffLayout: React.FC = () => {
   const maintenancePending = operationalTasks.filter(t => t.category === 'maintenance' && t.status !== 'completed').length;
 
   const allNavDefinitions: { id: StaffTab; label: string; icon: React.FC<{ className?: string }>; badge?: number }[] = [
-    { id: 'overview', label: 'Hospital Overview', icon: Building2 },
-    { id: 'tokens', label: 'Token Queue Desk', icon: Ticket, badge: waitingTokensCount },
-    { id: 'registration', label: 'Walk-In Registration', icon: UserPlus },
-    { id: 'beds', label: 'Bed Management Bureau', icon: BedDouble },
-    { id: 'emergency', label: '108 Casualty & Trauma', icon: ShieldAlert, badge: criticalEmergencyCount },
-    { id: 'civiccare', label: 'CivicCare Redressal', icon: MessageSquareHeart, badge: pendingGrievancesCount },
-    { id: 'attendant_tasks', label: 'Patient Transport Tasks', icon: UserCheck, badge: attendantPending },
-    { id: 'sanitation_tasks', label: 'Sanitation & Biohazard', icon: Sparkles, badge: sanitationPending },
-    { id: 'maintenance_tasks', label: 'Facility Maintenance', icon: Wrench, badge: maintenancePending },
-    { id: 'analytics', label: 'AI Operations Analytics', icon: BarChart3 },
-    { id: 'departments', label: 'Doctors & Scheduling', icon: Users },
-    { id: 'audit', label: 'Audit Trail & Logs', icon: FileText }
+    { id: 'overview', label: t('staff.nav_overview'), icon: Building2 },
+    { id: 'tokens', label: t('staff.nav_tokens'), icon: Ticket, badge: waitingTokensCount },
+    { id: 'registration', label: t('staff.nav_registration'), icon: UserPlus },
+    { id: 'beds', label: t('staff.nav_beds'), icon: BedDouble },
+    { id: 'emergency', label: t('staff.nav_emergency'), icon: ShieldAlert, badge: criticalEmergencyCount },
+    { id: 'civiccare', label: t('staff.nav_civiccare'), icon: MessageSquareHeart, badge: pendingGrievancesCount },
+    { id: 'attendant_tasks', label: t('staff.nav_attendant'), icon: UserCheck, badge: attendantPending },
+    { id: 'sanitation_tasks', label: t('staff.nav_sanitation'), icon: Sparkles, badge: sanitationPending },
+    { id: 'maintenance_tasks', label: t('staff.nav_maintenance'), icon: Wrench, badge: maintenancePending },
+    { id: 'analytics', label: t('staff.nav_analytics'), icon: BarChart3 },
+    { id: 'departments', label: t('staff.nav_departments'), icon: Users },
+    { id: 'audit', label: t('staff.nav_audit'), icon: FileText }
   ];
 
   // Filter navigation items strictly to the staff user's assigned permissions
@@ -99,14 +103,19 @@ export const StaffLayout: React.FC = () => {
             <span className="text-3xl shrink-0">{currentStaffUser.avatar}</span>
             <div className="min-w-0 flex-1">
               <h4 className="font-extrabold text-white text-xs truncate">{currentStaffUser.name}</h4>
-              <p className="text-[10px] text-teal-300 truncate font-bold uppercase">{currentStaffUser.role.replace('_', ' ')}</p>
+              <p className="text-[10px] text-teal-300 truncate font-bold uppercase">{translateRole(currentStaffUser.role)}</p>
               <p className="text-[10px] text-slate-400 font-mono">{currentStaffUser.badgeId}</p>
             </div>
           </div>
           <div className="mt-2 pt-2 border-t border-white/10 flex items-center justify-between text-[10px]">
             <span className="text-slate-400">Terminal:</span>
-            <span className="text-teal-300 font-medium truncate max-w-[150px]">{currentStaffUser.department}</span>
+            <span className="text-teal-300 font-medium truncate max-w-[150px]">{translateDepartment(currentStaffUser.department)}</span>
           </div>
+        </div>
+
+        {/* Language Switcher in Staff Sidebar */}
+        <div className="mb-3">
+          <LanguageSwitcher variant="dark" />
         </div>
 
         {/* Navigation Items (Role-based permissions) */}
@@ -148,7 +157,7 @@ export const StaffLayout: React.FC = () => {
             className="w-full text-slate-400 hover:text-rose-300 text-xs font-semibold py-2 px-3 rounded-xl hover:bg-white/5 flex items-center justify-center space-x-1.5 transition-colors"
           >
             <LogOut className="w-4 h-4" />
-            <span>Lock Session / Sign Out</span>
+            <span>{t('nav.sign_out')}</span>
           </button>
         </div>
       </aside>
@@ -167,18 +176,21 @@ export const StaffLayout: React.FC = () => {
               variant="compact" 
               theme="dark" 
               size="sm" 
-              badgeText={currentStaffUser.role.replace('_', ' ')} 
+              badgeText={translateRole(currentStaffUser.role)} 
             />
           </div>
         </div>
 
-        <button
-          onClick={logout}
-          className="p-1.5 text-slate-400 hover:text-rose-300"
-          title="Sign Out"
-        >
-          <LogOut className="w-4 h-4" />
-        </button>
+        <div className="flex items-center space-x-2">
+          <LanguageSwitcher variant="dark" />
+          <button
+            onClick={logout}
+            className="p-1.5 text-slate-400 hover:text-rose-300"
+            title={t('nav.sign_out')}
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       {/* MOBILE DRAWER */}

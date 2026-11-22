@@ -248,15 +248,15 @@ export const PatientProfile: React.FC = () => {
 
       {/* APP PREFERENCES & PWA SETTINGS */}
       <div className="bg-white border border-navy-200/80 rounded-3xl p-4 sm:p-5 shadow-soft-sm space-y-3">
-        <h3 className="font-bold text-navy-900 text-sm">App Preferences & PWA Settings</h3>
+        <h3 className="font-bold text-navy-900 text-sm">{t('profile.preferences_title', 'App Preferences & PWA Settings')}</h3>
 
         {/* Language selector */}
         <div className="flex items-center justify-between p-3 rounded-2xl bg-navy-50/60 border border-navy-100">
           <div className="flex items-center space-x-2">
             <Globe className="w-4 h-4 text-medical-600" />
             <div>
-              <span className="text-xs font-bold text-navy-900">Application Language</span>
-              <p className="text-[10px] text-navy-500">English, Telugu or Hindi</p>
+              <span className="text-xs font-bold text-navy-900">{t('profile.app_language', 'Application Language')}</span>
+              <p className="text-[10px] text-navy-500">{t('profile.app_language_desc', 'English, Telugu or Hindi')}</p>
             </div>
           </div>
           <div className="flex bg-white rounded-xl p-0.5 border border-navy-200 text-xs font-bold">
@@ -279,15 +279,15 @@ export const PatientProfile: React.FC = () => {
           <div className="flex items-center space-x-2">
             <Download className="w-4 h-4 text-medical-600" />
             <div>
-              <span className="text-xs font-bold text-navy-900">Install as Mobile App</span>
-              <p className="text-[10px] text-navy-500">Add to iPhone or Android Home Screen</p>
+              <span className="text-xs font-bold text-navy-900">{t('profile.install_pwa', 'Install as Mobile App')}</span>
+              <p className="text-[10px] text-navy-500">{t('profile.install_pwa_desc', 'Add to iPhone or Android Home Screen')}</p>
             </div>
           </div>
           <button
             onClick={installPWA}
             className="bg-medical-600 hover:bg-medical-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs active:scale-95 transition-all shadow-xs"
           >
-            Install PWA
+            {t('profile.install_btn', 'Install PWA')}
           </button>
         </div>
 
@@ -296,16 +296,16 @@ export const PatientProfile: React.FC = () => {
           <div className="flex items-center space-x-2">
             {isOnline ? <Wifi className="w-4 h-4 text-emerald-600" /> : <WifiOff className="w-4 h-4 text-amber-600" />}
             <div>
-              <span className="font-bold text-navy-900">Network Connectivity</span>
+              <span className="font-bold text-navy-900">{t('profile.network_status', 'Network Connectivity')}</span>
               <p className="text-[10px] text-navy-500">
-                {isOnline ? 'Online - Live Hospital Telemetry Connected' : 'Offline - Safe Static Cache Active'}
+                {isOnline ? t('profile.online', 'Online - Live Hospital Telemetry Connected') : t('profile.offline', 'Offline - Safe Static Cache Active')}
               </p>
             </div>
           </div>
           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
             isOnline ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
           }`}>
-            {isOnline ? 'Online' : 'Offline'}
+            {isOnline ? t('common.online', 'Online') : t('common.offline', 'Offline')}
           </span>
         </div>
       </div>
@@ -324,7 +324,7 @@ export const PatientProfile: React.FC = () => {
         className="w-full bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold py-3 rounded-3xl text-xs flex items-center justify-center space-x-1.5 transition-colors"
       >
         <LogOut className="w-4 h-4" />
-        <span>Sign Out of Patient Account</span>
+        <span>{t('profile.sign_out', 'Sign Out of Patient Account')}</span>
       </button>
 
       <CaregiverModal

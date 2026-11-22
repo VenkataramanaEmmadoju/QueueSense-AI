@@ -232,7 +232,7 @@ export const INITIAL_TOKENS: OPDToken[] = [
   {
     id: 'tok-001',
     tokenNumber: 'A-104',
-    patientName: 'Venkataramana Santhu',
+    patientName: 'Rahul Kumar',
     patientAge: 34,
     patientGender: 'Male',
     patientPhone: '+91 98490 12345',
@@ -376,7 +376,7 @@ export const INITIAL_CIVICCARE_GRIEVANCES: CivicCareGrievance[] = [
     hospitalName: 'Telangana Institute of Medical Sciences (TIMS)',
     wardOrDept: 'OPD Waiting Bay B (Ground Floor)',
     isAnonymous: false,
-    reporterName: 'Venkataramana Santhu',
+    reporterName: 'Rahul Kumar',
     reporterPhone: '+91 98490 12345',
     status: 'action_taken',
     filedAt: '2026-11-21 16:30',
@@ -693,7 +693,7 @@ export const INITIAL_AUDIT_LOGS: AuditLogItem[] = [
 
 export const DEMO_DEFAULT_PATIENT: PatientProfile = {
   id: 'pat-venkat',
-  name: 'Venkataramana Santhu',
+  name: 'Rahul Kumar',
   age: 34,
   gender: 'Male',
   phone: '+91 98490 12345',

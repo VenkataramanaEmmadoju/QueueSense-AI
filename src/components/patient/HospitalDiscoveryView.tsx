@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
 import { VERIFIED_GOVERNMENT_HOSPITALS } from '../../data/hospitalsDirectory';
 import { TELANGANA_ALL_33_DISTRICTS } from '../../data/telanganaDirectory';
+import { translateDepartment, translateHospitalName } from '../../i18n/translateHelpers';
 
 export const HospitalDiscoveryView: React.FC = () => {
   const { t } = useTranslation();
@@ -47,16 +48,16 @@ export const HospitalDiscoveryView: React.FC = () => {
     <div className="space-y-4 pb-24 md:pb-12 max-w-xl mx-auto">
       {/* Header */}
       <div>
-        <span className="text-[10px] font-black uppercase text-medical-700 tracking-wider">TELANGANA PUBLIC HEALTH NETWORK</span>
+        <span className="text-[10px] font-black uppercase text-medical-700 tracking-wider">{t('app.grid_badge')}</span>
         <h2 className="text-xl font-black text-navy-900 tracking-tight">{t('hosp.title')}</h2>
-        <p className="text-xs text-navy-500">Find government hospitals, teaching institutes and community health centres</p>
+        <p className="text-xs text-navy-500">{t('hosp.subtitle')}</p>
       </div>
 
       {/* Dataset & Operational Disclosure */}
       <div className="bg-medical-50/70 border border-medical-200/70 rounded-2xl p-3 flex items-start space-x-2 text-xs text-medical-900 shadow-soft-sm">
         <Info className="w-4 h-4 text-medical-700 shrink-0 mt-0.5" />
         <div className="leading-relaxed">
-          <strong>Verified Government Directory:</strong> Hospital addresses, categories and helplines are verified against public health records. For hackathon evaluation, <strong>TIMS Gachibowli</strong> acts as the full operational benchmark with live queue and bed telemetry.
+          <strong>{t('hosp.verified_directory')}:</strong> {t('hosp.benchmark_desc')}
         </div>
       </div>
 
@@ -65,7 +66,7 @@ export const HospitalDiscoveryView: React.FC = () => {
         <Search className="w-4 h-4 text-navy-400 absolute left-3.5 top-3.5" />
         <input
           type="text"
-          placeholder="Search by hospital name, specialty, or locality..."
+          placeholder={t('hosp.search_placeholder')}
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           className="w-full text-xs pl-10 pr-4 py-3 rounded-2xl border border-navy-200 bg-white focus:outline-none focus:ring-1 focus:ring-medical-600 shadow-soft-sm"
@@ -75,13 +76,13 @@ export const HospitalDiscoveryView: React.FC = () => {
       {/* Filters: District & Category */}
       <div className="grid grid-cols-2 gap-2 text-xs">
         <div>
-          <label className="text-[10px] font-bold text-navy-500 uppercase block mb-1">Filter District (33)</label>
+          <label className="text-[10px] font-bold text-navy-500 uppercase block mb-1">{t('hosp.filter_district')}</label>
           <select
             value={districtFilter}
             onChange={e => setDistrictFilter(e.target.value)}
             className="w-full p-2.5 rounded-xl border border-navy-200 bg-white text-xs font-semibold focus:ring-1 focus:ring-medical-600"
           >
-            <option value="All">All Districts (33)</option>
+            <option value="All">{t('hosp.all_districts')}</option>
             {TELANGANA_ALL_33_DISTRICTS.map(d => (
               <option key={d.id} value={d.name}>{d.name}</option>
             ))}
@@ -89,13 +90,13 @@ export const HospitalDiscoveryView: React.FC = () => {
         </div>
 
         <div>
-          <label className="text-[10px] font-bold text-navy-500 uppercase block mb-1">Facility Category</label>
+          <label className="text-[10px] font-bold text-navy-500 uppercase block mb-1">{t('common.filter')}</label>
           <select
             value={categoryFilter}
             onChange={e => setCategoryFilter(e.target.value)}
             className="w-full p-2.5 rounded-xl border border-navy-200 bg-white text-xs font-semibold focus:ring-1 focus:ring-medical-600"
           >
-            <option value="All">All Categories</option>
+            <option value="All">{t('common.all')}</option>
             <option value="Government Teaching Hospital">Teaching Hospital</option>
             <option value="District Hospital">District Hospital</option>
             <option value="Area Hospital">Area Hospital</option>
@@ -126,11 +127,11 @@ export const HospitalDiscoveryView: React.FC = () => {
                     </span>
                     {isOperational && (
                       <span className="bg-emerald-100 text-emerald-800 text-[9px] font-black px-2 py-0.5 rounded-full uppercase">
-                        Live Operational Hub
+                        {t('hosp.operational_hub')}
                       </span>
                     )}
                   </div>
-                  <h3 className="font-extrabold text-navy-950 text-sm sm:text-base mt-1.5">{hosp.name}</h3>
+                  <h3 className="font-extrabold text-navy-950 text-sm sm:text-base mt-1.5">{translateHospitalName(hosp.name)}</h3>
                   <p className="text-xs text-navy-500 mt-0.5 flex items-center space-x-1">
                     <MapPin className="w-3.5 h-3.5 text-medical-600 shrink-0" />
                     <span>{hosp.address}</span>
@@ -146,17 +147,17 @@ export const HospitalDiscoveryView: React.FC = () => {
               {/* Specialties / Bed preview */}
               <div className="bg-pearl p-3 rounded-2xl border border-navy-100 space-y-1.5 text-xs">
                 <div className="flex justify-between text-navy-600">
-                  <span>Capacity Benchmark:</span>
-                  <strong className="text-navy-900">{hosp.totalBeds} Beds ({hosp.availableBedsEstimate} estimated vacant)</strong>
+                  <span>{t('hosp.beds')}:</span>
+                  <strong className="text-navy-900">{hosp.totalBeds} ({hosp.availableBedsEstimate} {t('beds.available')})</strong>
                 </div>
                 <div className="flex justify-between text-navy-600">
-                  <span>Emergency Wing:</span>
+                  <span>{t('nav.emergency')}:</span>
                   <strong className="text-rose-700">{hosp.emergencyCasualty}</strong>
                 </div>
                 <div className="flex flex-wrap gap-1 pt-1">
                   {hosp.departments.slice(0, 4).map(d => (
                     <span key={d} className="bg-navy-100 text-navy-700 text-[10px] px-2 py-0.5 rounded-md font-medium">
-                      {d}
+                      {translateDepartment(d)}
                     </span>
                   ))}
                   {hosp.departments.length > 4 && (
@@ -174,7 +175,7 @@ export const HospitalDiscoveryView: React.FC = () => {
                   className="text-medical-700 hover:text-medical-800 font-bold flex items-center space-x-1"
                 >
                   <PhoneCall className="w-3.5 h-3.5" />
-                  <span>Helpline ({hosp.helpline})</span>
+                  <span>{t('hosp.call_hospital')} ({hosp.helpline})</span>
                 </a>
 
                 {isOperational ? (
@@ -186,7 +187,7 @@ export const HospitalDiscoveryView: React.FC = () => {
                     className="bg-medical-600 hover:bg-medical-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs flex items-center space-x-1 transition-all active:scale-95 shadow-soft-sm"
                   >
                     <CalendarPlus className="w-3.5 h-3.5" />
-                    <span>Book OPD Token</span>
+                    <span>{t('home.book_opd_appointment')}</span>
                   </button>
                 ) : (
                   <button

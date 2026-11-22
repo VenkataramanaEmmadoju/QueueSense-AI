@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   Stethoscope, 
   Users, 
@@ -27,8 +28,11 @@ import { DoctorScheduleView } from './DoctorScheduleView';
 import { DoctorInsightsView } from './DoctorInsightsView';
 import { DoctorProfileView } from './DoctorProfileView';
 import { BrandLogo } from '../common/BrandLogo';
+import { LanguageSwitcher } from '../common/LanguageSwitcher';
+import { translateDepartment } from '../../i18n/translateHelpers';
 
 export const DoctorLayout: React.FC = () => {
+  const { t } = useTranslation();
   const { 
     currentDoctorUser, 
     doctorTab, 
@@ -44,18 +48,18 @@ export const DoctorLayout: React.FC = () => {
   const waitingCount = doctorQueueTokens.filter(t => t.status === 'waiting').length;
 
   const navItems: { id: DoctorTab; label: string; icon: React.FC<{ className?: string }>; badge?: number }[] = [
-    { id: 'overview', label: 'Doctor Overview', icon: Stethoscope },
-    { id: 'queue', label: 'Assigned OPD Queue', icon: Users, badge: waitingCount },
+    { id: 'overview', label: t('doctor.nav_overview'), icon: Stethoscope },
+    { id: 'queue', label: t('doctor.nav_queue'), icon: Users, badge: waitingCount },
     { 
       id: 'consultation', 
-      label: 'Active Consultation', 
+      label: t('doctor.nav_consultation'), 
       icon: FileCheck, 
       badge: activeConsultationToken ? 1 : undefined 
     },
-    { id: 'appointments', label: "Today's Appointments", icon: Calendar },
-    { id: 'schedule', label: 'OPD Duty Schedule', icon: Clock },
-    { id: 'insights', label: 'AI Queue Insights', icon: BarChart3 },
-    { id: 'profile', label: 'Doctor Profile', icon: UserCheck }
+    { id: 'appointments', label: t('doctor.nav_appointments'), icon: Calendar },
+    { id: 'schedule', label: t('doctor.nav_schedule'), icon: Clock },
+    { id: 'insights', label: t('doctor.nav_insights'), icon: BarChart3 },
+    { id: 'profile', label: t('doctor.nav_profile'), icon: UserCheck }
   ];
 
   return (
@@ -81,17 +85,22 @@ export const DoctorLayout: React.FC = () => {
             </div>
             <div className="min-w-0 flex-1">
               <h4 className="font-extrabold text-white text-xs truncate">{currentDoctorUser.name}</h4>
-              <p className="text-[10px] text-teal-300 font-semibold truncate">{currentDoctorUser.department}</p>
+              <p className="text-[10px] text-teal-300 font-semibold truncate">{translateDepartment(currentDoctorUser.department)}</p>
               <p className="text-[10px] text-slate-400 font-mono">{currentDoctorUser.roomNumber}</p>
             </div>
           </div>
           <div className="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-between text-[10px]">
-            <span className="text-slate-400">Shift Status:</span>
+            <span className="text-slate-400">{t('doctor.shift_status')}</span>
             <span className="inline-flex items-center text-emerald-400 font-bold">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1" />
-              On Duty
+              {t('doctor.on_duty')}
             </span>
           </div>
+        </div>
+
+        {/* Language Switcher in Doctor Sidebar */}
+        <div className="mb-3">
+          <LanguageSwitcher variant="dark" />
         </div>
 
         {/* Active Consultation Alert Pill in Sidebar */}
@@ -101,7 +110,7 @@ export const DoctorLayout: React.FC = () => {
             className="mb-3 p-2.5 rounded-2xl bg-teal-500/15 border border-teal-400/40 text-left hover:bg-teal-500/25 transition-all text-xs"
           >
             <div className="flex items-center justify-between text-[10px] font-bold text-teal-300 uppercase">
-              <span>In Consultation</span>
+              <span>{t('doctor.consulting_now')}</span>
               <span className="w-2 h-2 rounded-full bg-teal-400 animate-ping" />
             </div>
             <p className="font-black text-white text-sm mt-0.5">{activeConsultationToken.tokenNumber}</p>
@@ -147,7 +156,7 @@ export const DoctorLayout: React.FC = () => {
             className="w-full text-slate-400 hover:text-rose-300 text-xs font-semibold py-2 px-3 rounded-xl hover:bg-white/5 flex items-center justify-center space-x-1.5 transition-colors"
           >
             <LogOut className="w-4 h-4" />
-            <span>Sign Out & Lock Desk</span>
+            <span>{t('doctor.sign_out')}</span>
           </button>
         </div>
       </aside>
@@ -170,18 +179,19 @@ export const DoctorLayout: React.FC = () => {
         </div>
 
         <div className="flex items-center space-x-2">
+          <LanguageSwitcher variant="dark" />
           {activeConsultationToken && (
             <button
               onClick={() => setDoctorTab('consultation')}
               className="bg-teal-500 text-slate-950 px-2 py-1 rounded-lg text-[10px] font-black animate-pulse"
             >
-              Consulting {activeConsultationToken.tokenNumber}
+              {t('doctor.consulting_now')} {activeConsultationToken.tokenNumber}
             </button>
           )}
           <button
             onClick={logout}
             className="p-1.5 text-slate-400 hover:text-rose-300"
-            title="Sign Out"
+            title={t('nav.sign_out')}
           >
             <LogOut className="w-4 h-4" />
           </button>

@@ -11,6 +11,7 @@ import {
   UserCheck
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { LanguageSwitcher } from './LanguageSwitcher';
 import { useApp } from '../../context/AppContext';
 import { LocationModal } from './LocationModal';
 import { CaregiverModal } from './CaregiverModal';
@@ -38,7 +39,7 @@ export const Header: React.FC = () => {
   const unreadCount = notifications.filter(n => !n.read).length;
 
   const currentCaregiverName = activePatientIdentity === 'self' 
-    ? 'Myself' 
+    ? t('nav.myself') 
     : `${activePatientIdentity.relationship} (${activePatientIdentity.name.split(' ')[0]})`;
 
   const handleLanguageChange = (lang: string) => {
@@ -76,21 +77,7 @@ export const Header: React.FC = () => {
             </a>
 
             {/* Language Switcher */}
-            <div className="flex items-center bg-navy-100/70 p-0.5 rounded-lg text-[11px] font-bold">
-              {(['en', 'te', 'hi'] as const).map(lang => (
-                <button
-                  key={lang}
-                  onClick={() => handleLanguageChange(lang)}
-                  className={`px-2 py-0.5 rounded-md transition-all uppercase ${
-                    i18n.language === lang 
-                      ? 'bg-white text-medical-800 shadow-soft-sm font-extrabold' 
-                      : 'text-navy-500 hover:text-navy-800'
-                  }`}
-                >
-                  {lang === 'te' ? 'తె' : lang === 'hi' ? 'हि' : 'EN'}
-                </button>
-              ))}
-            </div>
+            <LanguageSwitcher />
 
             {/* Logout button */}
             <button
@@ -130,7 +117,7 @@ export const Header: React.FC = () => {
                 className="hidden sm:flex items-center space-x-1.5 bg-teal-50 hover:bg-teal-100/80 border border-teal-200 text-teal-800 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all active:scale-95"
               >
                 <Users className="w-3.5 h-3.5 text-teal-600" />
-                <span>My Family</span>
+                <span>{t('nav.family')}</span>
               </button>
             )}
 
@@ -153,7 +140,7 @@ export const Header: React.FC = () => {
                 className="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center space-x-1 transition-all active:scale-95"
               >
                 <ShieldAlert className="w-3.5 h-3.5 text-rose-600 animate-bounce" />
-                <span className="hidden sm:inline">108 SOS</span>
+                <span className="hidden sm:inline">{t('app.call_108')}</span>
               </button>
             )}
 

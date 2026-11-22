@@ -11,9 +11,12 @@ import {
   Stethoscope,
   Activity
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
+import { translateDepartment, translateHospitalName } from '../../i18n/translateHelpers';
 
 export const DoctorOverview: React.FC = () => {
+  const { t } = useTranslation();
   const { 
     currentDoctorUser, 
     doctorQueueTokens, 
@@ -33,17 +36,17 @@ export const DoctorOverview: React.FC = () => {
         <div>
           <div className="flex items-center space-x-2">
             <span className="text-xs font-bold text-teal-700 uppercase tracking-wider">
-              {currentDoctorUser.department} • OPD Room 104
+              {translateDepartment(currentDoctorUser.department)} • OPD Room 104
             </span>
             <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded-full">
-              Live Duty Active
+              {t('doctor.on_duty', 'Live Duty Active')}
             </span>
           </div>
           <h2 className="text-2xl font-black text-slate-900 mt-1">
-            Good Morning, {currentDoctorUser.name}
+            {currentDoctorUser.name}
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
-            {currentDoctorUser.hospitalName} • Morning OPD Consultation Block (08:30 AM - 01:30 PM)
+            {translateHospitalName(currentDoctorUser.hospitalName)} • Morning OPD Block
           </p>
         </div>
 
@@ -55,7 +58,7 @@ export const DoctorOverview: React.FC = () => {
             className="bg-teal-600 hover:bg-teal-700 active:scale-95 disabled:opacity-50 text-white font-extrabold px-5 py-3 rounded-2xl text-xs flex items-center space-x-2 shadow-soft-md shadow-teal-600/20 transition-all"
           >
             <PhoneCall className="w-4 h-4" />
-            <span>Call Next Patient ({waitingTokens.length} Waiting)</span>
+            <span>{t('doctor.call_next_patient', 'Call Next Patient')} ({waitingTokens.length})</span>
           </button>
         </div>
       </div>
@@ -64,7 +67,7 @@ export const DoctorOverview: React.FC = () => {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-soft-xs">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Scheduled Today</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('doctor.nav_appointments', "Today's Appointments")}</span>
             <Calendar className="w-4 h-4 text-slate-400" />
           </div>
           <div className="text-2xl font-black text-slate-900">
@@ -75,7 +78,7 @@ export const DoctorOverview: React.FC = () => {
 
         <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-soft-xs">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-teal-700">Waiting in Lobby</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-teal-700">{t('doctor.card_queue_waiting', 'Patients Waiting')}</span>
             <Users className="w-4 h-4 text-teal-600" />
           </div>
           <div className="text-2xl font-black text-teal-700">
@@ -86,7 +89,7 @@ export const DoctorOverview: React.FC = () => {
 
         <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-soft-xs">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">Completed</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">{t('doctor.card_today_consultations', "Today's Completed")}</span>
             <CheckCircle2 className="w-4 h-4 text-emerald-600" />
           </div>
           <div className="text-2xl font-black text-emerald-700">
@@ -97,7 +100,7 @@ export const DoctorOverview: React.FC = () => {
 
         <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-soft-xs">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Avg Pace</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('doctor.card_avg_time', 'Avg Consultation Time')}</span>
             <Clock className="w-4 h-4 text-slate-400" />
           </div>
           <div className="text-2xl font-black text-slate-900">

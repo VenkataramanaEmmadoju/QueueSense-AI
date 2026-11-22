@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MapPin, Check, X, Search, ChevronRight, Building } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
 import { TELANGANA_ALL_33_DISTRICTS } from '../../data/telanganaDirectory';
 
@@ -9,6 +10,7 @@ interface LocationModalProps {
 }
 
 export const LocationModal: React.FC<LocationModalProps> = ({ isOpen, onClose }) => {
+  const { t } = useTranslation();
   const { 
     selectedDistrict, setSelectedDistrict,
     selectedMandal, setSelectedMandal,
@@ -60,8 +62,8 @@ export const LocationModal: React.FC<LocationModalProps> = ({ isOpen, onClose })
               <MapPin className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-bold text-navy-900 text-sm">Select Healthcare Region (All 33 Districts)</h3>
-              <p className="text-[11px] text-navy-500">Telangana Public Health Administrative Directory</p>
+              <h3 className="font-bold text-navy-900 text-sm">{t('modal.location_title', 'Select Telangana Healthcare Region')}</h3>
+              <p className="text-[11px] text-navy-500">{t('modal.location_subtitle', 'Choose district and municipality for localized OPD access')}</p>
             </div>
           </div>
           <button 
@@ -74,7 +76,7 @@ export const LocationModal: React.FC<LocationModalProps> = ({ isOpen, onClose })
 
         {/* Current Selection summary */}
         <div className="bg-navy-50 px-4 py-2 text-xs flex items-center justify-between border-b border-navy-100">
-          <span className="text-navy-500">Active Location:</span>
+          <span className="text-navy-500">{t('hosp.active_facility', 'Active Location')}:</span>
           <span className="font-semibold text-medical-700 truncate max-w-[280px]">
             {selectedVillage}, {selectedMandal}, {selectedDistrict}
           </span>
@@ -86,7 +88,7 @@ export const LocationModal: React.FC<LocationModalProps> = ({ isOpen, onClose })
             <Search className="w-3.5 h-3.5 text-navy-400 absolute left-3 top-3" />
             <input
               type="text"
-              placeholder="Search any of 33 Telangana districts..."
+              placeholder={t('hosp.search_placeholder', 'Search any of 33 Telangana districts...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="w-full text-xs pl-8 pr-3 py-2 rounded-xl border border-navy-200 bg-navy-50/50 focus:outline-none focus:ring-1 focus:ring-medical-600"
@@ -98,7 +100,7 @@ export const LocationModal: React.FC<LocationModalProps> = ({ isOpen, onClose })
           {/* Step 1: District Selection */}
           <div>
             <label className="text-xs font-bold text-navy-700 uppercase tracking-wider block mb-2">
-              1. Select District ({filteredDistricts.length} of 33)
+              {t('apt.select_district', 'Select District')} ({filteredDistricts.length})
             </label>
             <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">
               {filteredDistricts.map(dist => (

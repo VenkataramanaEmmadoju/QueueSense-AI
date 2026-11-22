@@ -15,10 +15,13 @@ import {
   Filter,
   Sparkles
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
 import { CivicCareGrievance } from '../../types';
+import { translateGrievanceCategory, translateStatus, translateHospitalName } from '../../i18n/translateHelpers';
 
 export const CivicCareFlow: React.FC = () => {
+  const { t } = useTranslation();
   const { 
     grievances, 
     submitCivicGrievance, 
@@ -38,12 +41,12 @@ export const CivicCareFlow: React.FC = () => {
   const [submittedCode, setSubmittedCode] = useState<string | null>(null);
 
   const categories = [
-    { id: 'sanitation', label: 'Hygiene & Washrooms', icon: '🧹' },
-    { id: 'queue_delay', label: 'Queue Delays & Crowding', icon: '⏱️' },
-    { id: 'medicine', label: 'Pharmacy Medicine Stock', icon: '💊' },
-    { id: 'infrastructure', label: 'Fans, Lifts & Water', icon: '🚰' },
-    { id: 'staff_conduct', label: 'Staff Guidance / Conduct', icon: '🤝' },
-    { id: 'billing', label: 'Aarogyasri / Billing', icon: '📋' }
+    { id: 'sanitation', label: t('civic.cat_sanitation', 'Hygiene & Washrooms'), icon: '🧹' },
+    { id: 'queue_delay', label: t('civic.cat_delay', 'Queue Delays & Crowding'), icon: '⏱️' },
+    { id: 'medicine', label: t('civic.cat_medicine', 'Pharmacy Medicine Stock'), icon: '💊' },
+    { id: 'infrastructure', label: t('civic.cat_equipment', 'Fans, Lifts & Water'), icon: '🚰' },
+    { id: 'staff_conduct', label: t('civic.cat_staff', 'Staff Guidance / Conduct'), icon: '🤝' },
+    { id: 'billing', label: t('civic.cat_other', 'Aarogyasri / Billing'), icon: '📋' }
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -75,7 +78,7 @@ export const CivicCareFlow: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <span className="text-[10px] font-black uppercase text-amber-700 tracking-wider">CITIZEN GRIEVANCE REDRESSAL</span>
-          <h2 className="text-xl font-black text-navy-900 tracking-tight">CivicCare Desk</h2>
+          <h2 className="text-xl font-black text-navy-900 tracking-tight">{t('civic.title', 'CivicCare Desk')}</h2>
         </div>
 
         <div className="flex bg-navy-100 p-1 rounded-2xl text-xs font-bold">
@@ -87,7 +90,7 @@ export const CivicCareFlow: React.FC = () => {
                 : 'text-navy-500 hover:text-navy-900'
             }`}
           >
-            Track Status
+            {t('civic.tab_track', 'Track Status')}
           </button>
           <button
             onClick={() => setActiveView('submit')}
@@ -97,7 +100,7 @@ export const CivicCareFlow: React.FC = () => {
                 : 'text-navy-500 hover:text-navy-900'
             }`}
           >
-            + File Grievance
+            {t('civic.tab_file', '+ File Grievance')}
           </button>
         </div>
       </div>
@@ -108,9 +111,9 @@ export const CivicCareFlow: React.FC = () => {
           <div className="flex items-start space-x-2.5">
             <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
             <div>
-              <h4 className="font-bold text-sm text-emerald-900">Grievance Registered Successfully</h4>
+              <h4 className="font-bold text-sm text-emerald-900">{t('civic.grievance_submitted', 'Grievance Registered Successfully')}</h4>
               <p className="mt-0.5">
-                Tracking ID: <strong className="text-emerald-700 font-mono text-xs">{submittedCode}</strong>
+                {t('civic.tracking_code', 'Tracking ID:')} <strong className="text-emerald-700 font-mono text-xs">{submittedCode}</strong>
               </p>
               <p className="text-[11px] text-emerald-800 mt-1">
                 Hospital Administration team notified. Official action timeline: within 4 hours.
@@ -130,16 +133,16 @@ export const CivicCareFlow: React.FC = () => {
       {activeView === 'submit' ? (
         <form onSubmit={handleSubmit} className="bg-white border border-navy-200/80 rounded-3xl p-5 shadow-soft-sm space-y-4 animate-in fade-in">
           <div>
-            <h3 className="font-extrabold text-navy-900 text-base">Submit Citizen Complaint</h3>
+            <h3 className="font-extrabold text-navy-900 text-base">{t('civic.title', 'Submit Citizen Complaint')}</h3>
             <p className="text-xs text-navy-500 mt-0.5">
-              Target Facility: <strong className="text-navy-800">{selectedHospital.name.split('(')[0]}</strong>
+              {t('apt.target_hospital', 'Target Facility')}: <strong className="text-navy-800">{translateHospitalName(selectedHospital.name.split('(')[0])}</strong>
             </p>
           </div>
 
           {/* Category Grid */}
           <div>
             <label className="text-xs font-bold text-navy-700 uppercase tracking-wider block mb-2">
-              Select Issue Category
+              {t('civic.category_label', 'Select Issue Category')}
             </label>
             <div className="grid grid-cols-2 gap-2">
               {categories.map((cat) => {
@@ -166,12 +169,12 @@ export const CivicCareFlow: React.FC = () => {
           {/* Title */}
           <div>
             <label className="text-xs font-bold text-navy-700 uppercase tracking-wider block mb-1">
-              Issue Headline
+              {t('civic.title_label', 'Issue Headline')}
             </label>
             <input
               type="text"
               required
-              placeholder="e.g. Broken water dispenser in OPD Bay B"
+              placeholder={t('civic.title_placeholder', 'e.g. Broken water dispenser in OPD Bay B')}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full text-xs p-3 rounded-2xl border border-navy-200 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-navy-50/50"
@@ -181,12 +184,12 @@ export const CivicCareFlow: React.FC = () => {
           {/* Ward or Department */}
           <div>
             <label className="text-xs font-bold text-navy-700 uppercase tracking-wider block mb-1">
-              Exact Location / Ward / Floor
+              {t('civic.ward_dept_label', 'Exact Location / Ward / Floor')}
             </label>
             <input
               type="text"
               required
-              placeholder="e.g. Ground Floor, Near Room 104"
+              placeholder={t('civic.ward_dept_placeholder', 'e.g. Ground Floor, Near Room 104')}
               value={wardOrDept}
               onChange={(e) => setWardOrDept(e.target.value)}
               className="w-full text-xs p-3 rounded-2xl border border-navy-200 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-navy-50/50"
@@ -196,12 +199,12 @@ export const CivicCareFlow: React.FC = () => {
           {/* Description */}
           <div>
             <label className="text-xs font-bold text-navy-700 uppercase tracking-wider block mb-1">
-              Detailed Description & Observation
+              {t('civic.desc_label', 'Detailed Description & Observation')}
             </label>
             <textarea
               required
               rows={3}
-              placeholder="Describe the issue so hospital inspectors can address it immediately..."
+              placeholder={t('civic.desc_placeholder', 'Describe the issue so hospital inspectors can address it immediately...')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="w-full text-xs p-3 rounded-2xl border border-navy-200 focus:outline-none focus:ring-1 focus:ring-amber-500 bg-navy-50/50"
@@ -257,7 +260,7 @@ export const CivicCareFlow: React.FC = () => {
               )}
               <div>
                 <span className="font-bold text-navy-900">
-                  {isAnonymous ? 'Anonymous Submission' : 'Submit with Patient Profile'}
+                  {isAnonymous ? t('civic.anonymous_checkbox', 'Anonymous Submission') : 'Submit with Patient Profile'}
                 </span>
                 <p className="text-[10px] text-navy-500">
                   {isAnonymous ? 'Your identity and phone number will be hidden' : `Linked to ${patientProfile.name}`}
@@ -276,7 +279,7 @@ export const CivicCareFlow: React.FC = () => {
             className="w-full bg-amber-600 hover:bg-amber-700 active:scale-[0.98] text-white font-bold py-3.5 px-4 rounded-2xl text-xs transition-all shadow-soft-sm flex items-center justify-center space-x-2"
           >
             <Send className="w-4 h-4" />
-            <span>Submit Grievance to Hospital Desk</span>
+            <span>{t('civic.submit_grievance', 'Submit Grievance to Hospital Desk')}</span>
           </button>
         </form>
       ) : (
@@ -309,7 +312,7 @@ export const CivicCareFlow: React.FC = () => {
                         <span className="text-[10px] text-navy-400">{g.filedAt}</span>
                       </div>
                       <h4 className="font-bold text-navy-950 text-sm mt-1">{g.title}</h4>
-                      <p className="text-xs text-navy-500">{g.wardOrDept} • {g.hospitalName.split('(')[0]}</p>
+                      <p className="text-xs text-navy-500">{g.wardOrDept} • {translateHospitalName(g.hospitalName.split('(')[0])}</p>
                     </div>
 
                     <span className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full shrink-0 ${
@@ -318,7 +321,7 @@ export const CivicCareFlow: React.FC = () => {
                       isUnderReview ? 'bg-amber-100 text-amber-800' :
                       'bg-navy-100 text-navy-700'
                     }`}>
-                      {g.status.replace('_', ' ')}
+                      {translateStatus(g.status)}
                     </span>
                   </div>
 
@@ -331,14 +334,14 @@ export const CivicCareFlow: React.FC = () => {
                     <div className="bg-medical-50/70 border border-medical-200/70 rounded-xl p-2.5 text-xs text-medical-950">
                       <div className="flex items-center space-x-1 text-[10px] font-bold uppercase text-medical-800 mb-0.5">
                         <CheckCircle2 className="w-3.5 h-3.5 text-medical-600" />
-                        <span>Action Report ({g.officerAssigned})</span>
+                        <span>{t('civic.resolution_summary', 'Action Report')} ({g.officerAssigned})</span>
                       </div>
                       <p className="text-[11px] leading-snug">{g.resolutionSummary}</p>
                     </div>
                   )}
 
                   <div className="flex items-center justify-between text-[11px] text-navy-500 pt-1 border-t border-navy-100">
-                    <span>Reporter: <strong>{g.isAnonymous ? 'Anonymous Citizen' : g.reporterName}</strong></span>
+                    <span>{t('apt.patient_name', 'Reporter')}: <strong>{g.isAnonymous ? 'Anonymous Citizen' : g.reporterName}</strong></span>
                     <span className="text-amber-800 font-semibold uppercase text-[10px]">Priority: {g.urgency}</span>
                   </div>
                 </div>

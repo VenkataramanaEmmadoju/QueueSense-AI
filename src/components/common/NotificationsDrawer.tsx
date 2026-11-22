@@ -1,5 +1,6 @@
 import React from 'react';
 import { Bell, X, CheckCheck, AlertCircle, Info, Sparkles, CheckCircle2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
 
 interface NotificationsDrawerProps {
@@ -8,6 +9,7 @@ interface NotificationsDrawerProps {
 }
 
 export const NotificationsDrawer: React.FC<NotificationsDrawerProps> = ({ isOpen, onClose }) => {
+  const { t } = useTranslation();
   const { notifications, markNotificationAsRead, clearAllNotifications } = useApp();
 
   if (!isOpen) return null;
@@ -24,7 +26,7 @@ export const NotificationsDrawer: React.FC<NotificationsDrawerProps> = ({ isOpen
               <Bell className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-bold text-navy-900 text-sm">Notifications & Alerts</h3>
+              <h3 className="font-bold text-navy-900 text-sm">{t('modal.notifications_title', 'Notifications & Alerts')}</h3>
               <p className="text-[11px] text-navy-500">Live queue updates and clinical status</p>
             </div>
           </div>
@@ -41,7 +43,7 @@ export const NotificationsDrawer: React.FC<NotificationsDrawerProps> = ({ isOpen
               className="text-medical-700 hover:text-medical-800 font-semibold flex items-center space-x-1"
             >
               <CheckCheck className="w-3.5 h-3.5" />
-              <span>Clear all</span>
+              <span>{t('modal.clear_all', 'Clear all')}</span>
             </button>
           )}
         </div>
@@ -50,7 +52,7 @@ export const NotificationsDrawer: React.FC<NotificationsDrawerProps> = ({ isOpen
           {notifications.length === 0 ? (
             <div className="text-center py-12 text-navy-400">
               <Bell className="w-10 h-10 mx-auto text-navy-300 stroke-1 mb-2" />
-              <p className="text-sm font-semibold text-navy-600">No New Notifications</p>
+              <p className="text-sm font-semibold text-navy-600">{t('modal.no_notifications', 'No New Notifications')}</p>
               <p className="text-xs text-navy-400 mt-1">Token queue callouts and emergency updates will appear here.</p>
             </div>
           ) : (

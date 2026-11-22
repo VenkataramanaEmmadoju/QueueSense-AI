@@ -63,10 +63,32 @@ const STORAGE_KEYS = {
   LANG: 'queuesense_preferred_lang'
 };
 
+// Migration helper: automatically upgrade any stale demo session or cached records in localStorage
+export const migrateLegacyPatientName = (): void => {
+  if (typeof window === 'undefined' || !window.localStorage) return;
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && (key.startsWith('queuesense_') || key.startsWith('qs_'))) {
+        const item = localStorage.getItem(key);
+        if (item && item.indexOf('Venkataramana Santhu') !== -1) {
+          localStorage.setItem(key, item.split('Venkataramana Santhu').join('Rahul Kumar'));
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('Error migrating legacy localStorage data', e);
+  }
+};
+
+if (typeof window !== 'undefined') {
+  migrateLegacyPatientName();
+}
+
 // Default Demo Patient
 export const DEFAULT_DEMO_PATIENT: StoredUser = {
   id: 'usr-demo-patient-01',
-  name: 'Venkataramana Santhu',
+  name: 'Rahul Kumar',
   phone: '+91 98490 12345',
   email: 'patient@queuesense.demo',
   age: 34,
@@ -121,7 +143,7 @@ export const INITIAL_DEMO_APPOINTMENTS: StoredAppointment[] = [
     tokenNumber: 'A-104',
     userId: 'usr-demo-patient-01',
     beneficiaryId: 'usr-demo-patient-01',
-    beneficiaryName: 'Venkataramana Santhu',
+    beneficiaryName: 'Rahul Kumar',
     beneficiaryRelation: 'Self',
     beneficiaryAge: 34,
     hospitalId: 'hosp-tims-gachibowli',
@@ -184,9 +206,15 @@ export const StorageService = {
   // Session
   getSession(): AuthSession {
     try {
+      migrateLegacyPatientName();
       const data = localStorage.getItem(STORAGE_KEYS.SESSION);
       if (data) {
-        return JSON.parse(data);
+        const session: AuthSession = JSON.parse(data);
+        if (session.user && session.user.name === 'Venkataramana Santhu') {
+          session.user.name = 'Rahul Kumar';
+          localStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(session));
+        }
+        return session;
       }
     } catch (e) {
       console.warn('Error reading session from localStorage', e);
@@ -270,7 +298,19 @@ export const StorageService = {
       const key = `${STORAGE_KEYS.APPOINTMENTS_PREFIX}${userId}`;
       const data = localStorage.getItem(key);
       if (data) {
-        return JSON.parse(data);
+        const parsed: StoredAppointment[] = JSON.parse(data);
+        let changed = false;
+        const sanitized = parsed.map(apt => {
+          if (apt.beneficiaryName === 'Venkataramana Santhu') {
+            changed = true;
+            return { ...apt, beneficiaryName: 'Rahul Kumar' };
+          }
+          return apt;
+        });
+        if (changed) {
+          localStorage.setItem(key, JSON.stringify(sanitized));
+        }
+        return sanitized;
       }
     } catch (e) {
       console.warn('Error reading appointments', e);

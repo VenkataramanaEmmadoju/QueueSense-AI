@@ -15,9 +15,12 @@ import {
   Stethoscope,
   Info
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
+import { translateDepartment } from '../../i18n/translateHelpers';
 
 export const LiveQueueTracker: React.FC = () => {
+  const { t } = useTranslation();
   const { 
     activePatientToken, 
     tokens, 
@@ -33,7 +36,7 @@ export const LiveQueueTracker: React.FC = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-      addToast('Queue Position Refreshed', 'Synced with Hospital OPD Triage Engine');
+      addToast(t('common.success', 'Queue Position Refreshed'), t('queue.refresh_queue', 'Synced with Hospital OPD Triage Engine'));
     }, 500);
   };
 
@@ -44,9 +47,9 @@ export const LiveQueueTracker: React.FC = () => {
         <div className="w-16 h-16 rounded-3xl bg-teal-50 text-teal-700 flex items-center justify-center mx-auto mb-3 border border-teal-200">
           <Ticket className="w-8 h-8" />
         </div>
-        <h2 className="text-xl font-black text-navy-900">No Active Queue Token</h2>
+        <h2 className="text-xl font-black text-navy-900">{t('home.no_token_title', 'No Active Queue Token')}</h2>
         <p className="text-xs text-navy-500 max-w-sm mx-auto">
-          You currently don't have an in-progress OPD consultation token. Book an appointment or walk-in digital pass to track live queue stages.
+          {t('home.no_token_desc', "You currently don't have an in-progress OPD consultation token. Book an appointment or walk-in digital pass to track live queue stages.")}
         </p>
 
         <div className="pt-4">
@@ -55,7 +58,7 @@ export const LiveQueueTracker: React.FC = () => {
             className="bg-medical-600 hover:bg-medical-700 active:scale-95 text-white font-bold px-6 py-3 rounded-2xl text-xs flex items-center justify-center space-x-2 mx-auto shadow-soft-sm"
           >
             <CalendarPlus className="w-4 h-4" />
-            <span>Book New OPD Token</span>
+            <span>{t('apt.book_now', 'Book New OPD Token')}</span>
           </button>
         </div>
       </div>
@@ -73,7 +76,7 @@ export const LiveQueueTracker: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <span className="text-[10px] font-black uppercase text-medical-700 tracking-wider">LIVE QUEUE RADAR</span>
-          <h2 className="text-xl font-black text-navy-900 tracking-tight">Consultation Tracker</h2>
+          <h2 className="text-xl font-black text-navy-900 tracking-tight">{t('queue.title', 'Consultation Tracker')}</h2>
         </div>
         <button
           onClick={handleRefresh}
@@ -81,7 +84,7 @@ export const LiveQueueTracker: React.FC = () => {
           className="flex items-center space-x-1 text-xs text-medical-700 bg-medical-50 hover:bg-medical-100 font-semibold px-3 py-1.5 rounded-xl border border-medical-200 transition-all active:scale-95"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
-          <span>Sync Queue</span>
+          <span>{t('queue.refresh_queue', 'Sync Queue')}</span>
         </button>
       </div>
 
@@ -92,12 +95,12 @@ export const LiveQueueTracker: React.FC = () => {
 
         <div className="flex items-start justify-between relative z-10">
           <div>
-            <span className="text-xs text-medical-300 font-medium">Your Token Number</span>
+            <span className="text-xs text-medical-300 font-medium">{t('queue.live_token', 'Your Token Number')}</span>
             <div className="text-4xl sm:text-5xl font-black text-white tracking-tight mt-0.5">
               {activePatientToken.tokenNumber}
             </div>
             <p className="text-xs text-slate-300 mt-1">
-              Patient: <strong className="text-white">{activePatientToken.patientName}</strong>
+              {t('apt.patient_name', 'Patient')}: <strong className="text-white">{activePatientToken.patientName}</strong>
             </p>
           </div>
 
@@ -114,14 +117,14 @@ export const LiveQueueTracker: React.FC = () => {
         {/* Live Counters */}
         <div className="grid grid-cols-2 gap-2 mt-5 pt-4 border-t border-white/10 text-center">
           <div className="bg-white/5 rounded-2xl p-2.5 backdrop-blur-sm">
-            <span className="text-[10px] text-slate-400 uppercase font-semibold block">Now In Room</span>
+            <span className="text-[10px] text-slate-400 uppercase font-semibold block">{t('doctor.active_patient_banner', 'Now In Room')}</span>
             <span className="text-xl font-black text-amber-400">
-              {servingTokenInDept ? servingTokenInDept.tokenNumber : 'None'}
+              {servingTokenInDept ? servingTokenInDept.tokenNumber : '-'}
             </span>
           </div>
 
           <div className="bg-white/5 rounded-2xl p-2.5 backdrop-blur-sm">
-            <span className="text-[10px] text-slate-400 uppercase font-semibold block">Estimated Call</span>
+            <span className="text-[10px] text-slate-400 uppercase font-semibold block">{t('queue.est_wait_time', 'Estimated Call')}</span>
             <span className="text-xl font-black text-medical-300">
               {activePatientToken.estimatedConsultTime}
             </span>
@@ -134,7 +137,7 @@ export const LiveQueueTracker: React.FC = () => {
             <span className="truncate">{activePatientToken.roomNumber} • {activePatientToken.doctorName}</span>
           </div>
           <span className="font-bold text-teal-300 shrink-0">
-            {activePatientToken.peopleAhead} Ahead
+            {activePatientToken.peopleAhead} {t('queue.people_ahead', 'Ahead')}
           </span>
         </div>
       </div>
@@ -156,12 +159,12 @@ export const LiveQueueTracker: React.FC = () => {
               <Clock className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-bold text-navy-900 text-sm">Patient Care Journey</h3>
-              <p className="text-[11px] text-navy-500">Step-by-step hospital navigation</p>
+              <h3 className="font-bold text-navy-900 text-sm">{t('queue.subtitle', 'Patient Care Journey')}</h3>
+              <p className="text-[11px] text-navy-500">{t('common.details', 'Step-by-step hospital navigation')}</p>
             </div>
           </div>
           <span className="text-[10px] bg-navy-100 text-navy-700 font-bold px-2 py-0.5 rounded-full">
-            4 Milestones
+            4 {t('common.actions', 'Milestones')}
           </span>
         </div>
 
@@ -235,8 +238,8 @@ export const LiveQueueTracker: React.FC = () => {
       {showQRModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy-950/70 backdrop-blur-sm p-4 animate-in fade-in">
           <div className="bg-white rounded-3xl p-6 max-w-xs w-full text-center shadow-2xl relative">
-            <h3 className="font-bold text-navy-900 text-sm">Token Pass QR Code</h3>
-            <p className="text-xs text-navy-500 mb-4">Present at OPD Counter / Doctor Room</p>
+            <h3 className="font-bold text-navy-900 text-sm">{t('apt.step_pass', 'Token Pass QR Code')}</h3>
+            <p className="text-xs text-navy-500 mb-4">{t('queue.qr_instructions', 'Present at OPD Counter / Doctor Room')}</p>
             
             <div className="w-48 h-48 mx-auto bg-navy-50 p-3 rounded-2xl border border-navy-200 flex items-center justify-center">
               <svg viewBox="0 0 100 100" className="w-full h-full text-navy-900">
@@ -261,13 +264,13 @@ export const LiveQueueTracker: React.FC = () => {
             </div>
 
             <div className="text-2xl font-black text-medical-700 mt-3">{activePatientToken.tokenNumber}</div>
-            <div className="text-xs text-navy-600 font-medium">{activePatientToken.department}</div>
+            <div className="text-xs text-navy-600 font-medium">{translateDepartment(activePatientToken.department)}</div>
 
             <button
               onClick={() => setShowQRModal(false)}
               className="mt-5 w-full bg-navy-900 hover:bg-navy-800 text-white font-semibold py-2.5 rounded-xl text-xs"
             >
-              Close Pass
+              {t('common.close', 'Close Pass')}
             </button>
           </div>
         </div>

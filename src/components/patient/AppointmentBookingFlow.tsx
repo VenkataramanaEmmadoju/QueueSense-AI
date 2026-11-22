@@ -22,6 +22,7 @@ import { useApp } from '../../context/AppContext';
 import { TELANGANA_ALL_33_DISTRICTS } from '../../data/telanganaDirectory';
 import { VERIFIED_GOVERNMENT_HOSPITALS } from '../../data/hospitalsDirectory';
 import { FamilyMember, StoredAppointment } from '../../types';
+import { translateDepartment, translateHospitalName } from '../../i18n/translateHelpers';
 
 export const AppointmentBookingFlow: React.FC = () => {
   const { t } = useTranslation();
@@ -184,7 +185,7 @@ export const AppointmentBookingFlow: React.FC = () => {
           className="flex items-center space-x-1.5 text-navy-600 hover:text-navy-950 text-xs font-semibold p-2 rounded-xl hover:bg-navy-100 transition-all"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>{currentStep === 6 ? 'Return Home' : 'Back'}</span>
+          <span>{currentStep === 6 ? t('nav.home') : t('common.back')}</span>
         </button>
 
         <div className="flex items-center space-x-1.5">
@@ -202,17 +203,17 @@ export const AppointmentBookingFlow: React.FC = () => {
           ))}
         </div>
 
-        <span className="text-xs font-bold text-navy-400">Step {currentStep} of 6</span>
+        <span className="text-xs font-bold text-navy-400">Step {currentStep} / 6</span>
       </div>
 
       {/* STEP 1: Select Beneficiary */}
       {currentStep === 1 && (
         <div className="space-y-4 animate-in fade-in duration-200">
           <div>
-            <span className="text-[10px] font-black uppercase text-medical-700 tracking-wider">STEP 1 • BENEFICIARY</span>
-            <h2 className="text-xl font-black text-navy-900 tracking-tight">Who is this OPD Appointment For?</h2>
+            <span className="text-[10px] font-black uppercase text-medical-700 tracking-wider">{t('apt.step_beneficiary')}</span>
+            <h2 className="text-xl font-black text-navy-900 tracking-tight">{t('apt.select_beneficiary')}</h2>
             <p className="text-xs text-navy-500 mt-0.5">
-              Select yourself or a saved family member from your account
+              {t('apt.booking_subtitle')}
             </p>
           </div>
 
@@ -234,11 +235,11 @@ export const AppointmentBookingFlow: React.FC = () => {
                   <div className="flex items-center space-x-2">
                     <h3 className="font-extrabold text-navy-950 text-sm">{currentUser?.name || patientProfile.name}</h3>
                     <span className="text-[9px] bg-medical-200 text-medical-900 px-2 py-0.5 rounded font-black uppercase">
-                      Myself
+                      {t('nav.myself')}
                     </span>
                   </div>
                   <p className="text-xs text-navy-500 mt-0.5">
-                    Age: {currentUser?.age || patientProfile.age} • Phone: {currentUser?.phone || patientProfile.phone}
+                    {t('auth.age')}: {currentUser?.age || patientProfile.age} • {t('auth.mobile_phone')}: {currentUser?.phone || patientProfile.phone}
                   </p>
                 </div>
               </div>
@@ -383,7 +384,7 @@ export const AppointmentBookingFlow: React.FC = () => {
             }}
             className="w-full bg-medical-600 hover:bg-medical-700 active:scale-[0.98] text-white font-bold py-3 px-4 rounded-2xl text-sm transition-all shadow-soft-sm flex items-center justify-center space-x-2"
           >
-            <span>Proceed to Location & Hospital</span>
+            <span>{t('apt.next_step')}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
@@ -393,22 +394,22 @@ export const AppointmentBookingFlow: React.FC = () => {
       {currentStep === 2 && (
         <div className="space-y-4 animate-in fade-in duration-200">
           <div>
-            <span className="text-[10px] font-black uppercase text-medical-700 tracking-wider">STEP 2 • HEALTHCARE FACILITY</span>
-            <h2 className="text-xl font-black text-navy-900 tracking-tight">Select Telangana Hospital</h2>
+            <span className="text-[10px] font-black uppercase text-medical-700 tracking-wider">{t('apt.step_hospital')}</span>
+            <h2 className="text-xl font-black text-navy-900 tracking-tight">{t('apt.select_hospital_heading')}</h2>
             <p className="text-xs text-navy-500 mt-0.5">
-              Choose from all 33 Telangana districts with verified government health centres
+              {t('hosp.subtitle')}
             </p>
           </div>
 
           {/* Cascading Location Selectors */}
           <div className="bg-white border border-navy-200/80 rounded-3xl p-4 shadow-soft-sm space-y-3">
             <h3 className="font-extrabold text-xs text-navy-700 uppercase tracking-wider">
-              1. Choose Administrative Region
+              {t('apt.select_district')}
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <div>
-                <label className="text-[10px] font-bold text-navy-500 uppercase block mb-1">District (33)</label>
+                <label className="text-[10px] font-bold text-navy-500 uppercase block mb-1">{t('auth.telangana_district')}</label>
                 <select
                   value={bookingDistrict}
                   onChange={e => handleDistrictChange(e.target.value)}
@@ -421,7 +422,7 @@ export const AppointmentBookingFlow: React.FC = () => {
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-navy-500 uppercase block mb-1">Mandal</label>
+                <label className="text-[10px] font-bold text-navy-500 uppercase block mb-1">{t('auth.telangana_mandal')}</label>
                 <select
                   value={bookingMandal}
                   onChange={e => handleMandalChange(e.target.value)}
@@ -434,7 +435,7 @@ export const AppointmentBookingFlow: React.FC = () => {
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-navy-500 uppercase block mb-1">Village / Town</label>
+                <label className="text-[10px] font-bold text-navy-500 uppercase block mb-1">{t('auth.village_ward')}</label>
                 <select
                   value={bookingVillage}
                   onChange={e => setBookingVillage(e.target.value)}
@@ -470,18 +471,18 @@ export const AppointmentBookingFlow: React.FC = () => {
                   </div>
                   <div>
                     <div className="flex items-center space-x-1.5 flex-wrap gap-1">
-                      <h4 className="font-extrabold text-navy-950 text-sm">{operationalDemoHospital.name}</h4>
+                      <h4 className="font-extrabold text-navy-950 text-sm">{translateHospitalName(operationalDemoHospital.name)}</h4>
                       <span className="bg-emerald-100 text-emerald-800 text-[9px] font-black px-1.5 py-0.2 rounded uppercase">
-                        Live Demo Operational Hub
+                        {t('hosp.benchmark_title', 'Live Demo Operational Hub')}
                       </span>
                     </div>
                     <p className="text-xs text-navy-500 mt-1">{operationalDemoHospital.address}</p>
                     <div className="flex items-center space-x-2 mt-2">
                       <span className="text-[10px] bg-teal-100 text-teal-800 font-bold px-2 py-0.5 rounded-full">
-                        {operationalDemoHospital.departments.length} Specialties
+                        {operationalDemoHospital.departments.length} {t('apt.department', 'Specialties')}
                       </span>
                       <span className="text-[10px] text-emerald-700 font-bold">
-                        Aarogyasri Free OPD
+                        {t('apt.free_gov', 'Aarogyasri Free OPD')}
                       </span>
                     </div>
                   </div>
@@ -514,9 +515,9 @@ export const AppointmentBookingFlow: React.FC = () => {
                       <Building2 className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="font-extrabold text-navy-950 text-sm">{hosp.name}</h4>
+                      <h4 className="font-extrabold text-navy-950 text-sm">{translateHospitalName(hosp.name)}</h4>
                       <p className="text-xs text-navy-500 mt-0.5">{hosp.address}</p>
-                      <p className="text-[11px] text-navy-400 mt-1">Helpline: {hosp.helpline}</p>
+                      <p className="text-[11px] text-navy-400 mt-1">{t('hosp.call_hospital', 'Helpline')}: {hosp.helpline}</p>
                     </div>
                   </div>
 
@@ -536,7 +537,7 @@ export const AppointmentBookingFlow: React.FC = () => {
             onClick={() => setCurrentStep(3)}
             className="w-full bg-medical-600 hover:bg-medical-700 active:scale-[0.98] text-white font-bold py-3 px-4 rounded-2xl text-sm transition-all shadow-soft-sm flex items-center justify-center space-x-2"
           >
-            <span>Proceed to Clinical Department</span>
+            <span>{t('apt.next_step', 'Proceed to Clinical Department')}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
@@ -546,10 +547,10 @@ export const AppointmentBookingFlow: React.FC = () => {
       {currentStep === 3 && (
         <div className="space-y-4 animate-in fade-in duration-200">
           <div>
-            <span className="text-[10px] font-black uppercase text-medical-700 tracking-wider">STEP 3 • SPECIALTY</span>
-            <h2 className="text-xl font-black text-navy-900 tracking-tight">Select Clinical Department</h2>
+            <span className="text-[10px] font-black uppercase text-medical-700 tracking-wider">{t('apt.step_dept', 'STEP 3 • SPECIALTY')}</span>
+            <h2 className="text-xl font-black text-navy-900 tracking-tight">{t('apt.choose_department', 'Select Clinical Department')}</h2>
             <p className="text-xs text-navy-500 mt-0.5">
-              Target Hospital: <strong className="text-navy-900">{activeHospital.name.split('(')[0]}</strong>
+              {t('apt.target_hospital', 'Target Hospital')}: <strong className="text-navy-900">{translateHospitalName(activeHospital.name.split('(')[0])}</strong>
             </p>
           </div>
 
@@ -573,14 +574,14 @@ export const AppointmentBookingFlow: React.FC = () => {
                       {dept.shortCode}
                     </div>
                     <div>
-                      <h3 className="font-bold text-navy-950 text-sm">{dept.name}</h3>
+                      <h3 className="font-bold text-navy-950 text-sm">{translateDepartment(dept.name)}</h3>
                       <p className="text-xs text-navy-500 mt-0.5">{dept.headDoctor} • {dept.roomNumber}</p>
                       <div className="flex items-center space-x-2 mt-1.5">
                         <span className="text-[10px] bg-navy-100 text-navy-700 font-semibold px-2 py-0.5 rounded-full">
-                          {dept.activeDoctors} Doctors on Shift
+                          {dept.activeDoctors} {t('doctor.brand_badge', 'Doctors')}
                         </span>
                         <span className="text-[10px] text-medical-700 font-bold">
-                          Est. wait ~{dept.avgWaitMins}m
+                          {t('queue.est_wait_time', 'Est. wait')} ~{dept.avgWaitMins}{t('home.mins', 'm')}
                         </span>
                       </div>
                     </div>
@@ -602,7 +603,7 @@ export const AppointmentBookingFlow: React.FC = () => {
             onClick={() => setCurrentStep(4)}
             className="w-full bg-medical-600 hover:bg-medical-700 active:scale-[0.98] text-white font-bold py-3 px-4 rounded-2xl text-sm transition-all shadow-soft-sm flex items-center justify-center space-x-2"
           >
-            <span>Proceed to Date & Slot</span>
+            <span>{t('apt.next_step', 'Proceed to Date & Slot')}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
@@ -612,23 +613,23 @@ export const AppointmentBookingFlow: React.FC = () => {
       {currentStep === 4 && (
         <div className="space-y-4 animate-in fade-in duration-200">
           <div>
-            <span className="text-[10px] font-black uppercase text-medical-700 tracking-wider">STEP 4 • TIMING</span>
-            <h2 className="text-xl font-black text-navy-900 tracking-tight">Select Date & Consultation Window</h2>
+            <span className="text-[10px] font-black uppercase text-medical-700 tracking-wider">{t('apt.step_slot', 'STEP 4 • TIMING')}</span>
+            <h2 className="text-xl font-black text-navy-900 tracking-tight">{t('apt.choose_date', 'Select Date & Consultation Window')}</h2>
             <p className="text-xs text-navy-500 mt-0.5">
-              Consultant: <strong>{activeDepartment.headDoctor}</strong> ({activeDepartment.roomNumber})
+              {t('apt.doctor', 'Consultant')}: <strong>{activeDepartment.headDoctor}</strong> ({activeDepartment.roomNumber})
             </p>
           </div>
 
           {/* Date Selector Chips */}
           <div>
             <label className="text-xs font-bold text-navy-700 uppercase tracking-wider block mb-2">
-              Choose Consultation Date
+              {t('apt.choose_date', 'Choose Consultation Date')}
             </label>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { date: todayStr, label: 'Today', sub: 'Immediate' },
-                { date: tomorrowStr, label: 'Tomorrow', sub: 'Next Day' },
-                { date: dayAfterStr, label: 'Day After', sub: 'Advance' }
+                { date: todayStr, label: t('apt.today', 'Today'), sub: 'Immediate' },
+                { date: tomorrowStr, label: t('apt.tomorrow', 'Tomorrow'), sub: 'Next Day' },
+                { date: dayAfterStr, label: t('apt.day_after', 'Day After'), sub: 'Advance' }
               ].map(d => (
                 <button
                   key={d.date}
@@ -651,7 +652,7 @@ export const AppointmentBookingFlow: React.FC = () => {
           {/* Slots */}
           <div>
             <label className="text-xs font-bold text-navy-700 uppercase tracking-wider block mb-2">
-              Available Consultation Windows
+              {t('apt.available_slots', 'Available Consultation Windows')}
             </label>
             <div className="grid grid-cols-2 gap-2.5">
               {[
@@ -677,7 +678,7 @@ export const AppointmentBookingFlow: React.FC = () => {
                     <span>{slot}</span>
                   </div>
                   <span className="text-[10px] text-emerald-700 font-semibold block mt-1">
-                    ✓ Available Window
+                    ✓ {t('apt.slots_available', 'Available Window')}
                   </span>
                 </button>
               ))}
@@ -688,7 +689,7 @@ export const AppointmentBookingFlow: React.FC = () => {
             onClick={() => setCurrentStep(5)}
             className="w-full bg-medical-600 hover:bg-medical-700 active:scale-[0.98] text-white font-bold py-3 px-4 rounded-2xl text-sm transition-all shadow-soft-sm flex items-center justify-center space-x-2"
           >
-            <span>Review Appointment Summary</span>
+            <span>{t('apt.review_booking', 'Review Appointment Summary')}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
@@ -698,57 +699,57 @@ export const AppointmentBookingFlow: React.FC = () => {
       {currentStep === 5 && (
         <div className="space-y-4 animate-in fade-in duration-200">
           <div>
-            <span className="text-[10px] font-black uppercase text-medical-700 tracking-wider">STEP 5 • VERIFICATION</span>
-            <h2 className="text-xl font-black text-navy-900 tracking-tight">Review Appointment Details</h2>
+            <span className="text-[10px] font-black uppercase text-medical-700 tracking-wider">{t('apt.step_review', 'STEP 5 • VERIFICATION')}</span>
+            <h2 className="text-xl font-black text-navy-900 tracking-tight">{t('apt.review_booking', 'Review Appointment Details')}</h2>
             <p className="text-xs text-navy-500 mt-0.5">
-              Please verify beneficiary and clinical information before generating digital pass
+              {t('apt.booking_subtitle', 'Please verify beneficiary and clinical information before generating digital pass')}
             </p>
           </div>
 
           <div className="bg-white border border-navy-200/80 rounded-3xl p-5 shadow-soft-sm space-y-3.5">
             <div className="flex items-center justify-between pb-3 border-b border-navy-100">
               <div>
-                <span className="text-[10px] text-navy-400 uppercase font-bold block">Patient Beneficiary</span>
+                <span className="text-[10px] text-navy-400 uppercase font-bold block">{t('apt.patient_name', 'Patient Beneficiary')}</span>
                 <h3 className="font-extrabold text-navy-950 text-base">{currentBeneficiary.name}</h3>
                 <span className="text-xs text-medical-700 font-semibold">
-                  Relation: {currentBeneficiary.relation} • Age: {currentBeneficiary.age} Yrs
+                  {t('family.relationship', 'Relation')}: {currentBeneficiary.relation} • {t('family.modal_age_label', 'Age')}: {currentBeneficiary.age} {t('family.age_years', 'Yrs')}
                 </span>
               </div>
               <button
                 onClick={() => setCurrentStep(1)}
                 className="text-xs text-medical-700 font-bold hover:underline"
               >
-                Change
+                {t('common.edit', 'Change')}
               </button>
             </div>
 
             <div className="grid grid-cols-2 gap-3 text-xs">
               <div>
-                <span className="text-navy-400 text-[10px] uppercase font-bold block">Hospital</span>
-                <span className="font-bold text-navy-900 block mt-0.5">{activeHospital.name.split('(')[0]}</span>
+                <span className="text-navy-400 text-[10px] uppercase font-bold block">{t('apt.target_hospital', 'Hospital')}</span>
+                <span className="font-bold text-navy-900 block mt-0.5">{translateHospitalName(activeHospital.name.split('(')[0])}</span>
                 <span className="text-[11px] text-navy-500">{bookingDistrict}, {bookingMandal}</span>
               </div>
               <div>
-                <span className="text-navy-400 text-[10px] uppercase font-bold block">Specialty</span>
-                <span className="font-bold text-navy-900 block mt-0.5">{activeDepartment.name}</span>
+                <span className="text-navy-400 text-[10px] uppercase font-bold block">{t('apt.department', 'Specialty')}</span>
+                <span className="font-bold text-navy-900 block mt-0.5">{translateDepartment(activeDepartment.name)}</span>
                 <span className="text-[11px] text-navy-500">{activeDepartment.roomNumber}</span>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3 text-xs pt-2 border-t border-navy-100">
               <div>
-                <span className="text-navy-400 text-[10px] uppercase font-bold block">Date</span>
+                <span className="text-navy-400 text-[10px] uppercase font-bold block">{t('common.date', 'Date')}</span>
                 <span className="font-bold text-navy-900 block mt-0.5">{selectedDate}</span>
               </div>
               <div>
-                <span className="text-navy-400 text-[10px] uppercase font-bold block">Window</span>
+                <span className="text-navy-400 text-[10px] uppercase font-bold block">{t('common.time', 'Window')}</span>
                 <span className="font-bold text-medical-700 block mt-0.5">{selectedSlot}</span>
               </div>
             </div>
 
             <div className="bg-emerald-50 border border-emerald-200 p-3 rounded-2xl flex items-center justify-between text-xs text-emerald-950">
-              <span>Government Consultation Fee:</span>
-              <strong className="text-emerald-700 text-sm">₹0 (Free Govt OPD / Aarogyasri)</strong>
+              <span>{t('apt.consultation_fee', 'Government Consultation Fee')}:</span>
+              <strong className="text-emerald-700 text-sm">{t('apt.free_gov', '₹0 (Free Govt OPD / Aarogyasri)')}</strong>
             </div>
           </div>
 
@@ -758,11 +759,11 @@ export const AppointmentBookingFlow: React.FC = () => {
             className="w-full bg-medical-600 hover:bg-medical-700 active:scale-[0.98] text-white font-black py-3.5 px-4 rounded-2xl text-sm transition-all shadow-soft-md flex items-center justify-center space-x-2"
           >
             {isSubmitting ? (
-              <span>Registering Digital Token & Pass...</span>
+              <span>{t('common.loading', 'Registering Digital Token & Pass...')}</span>
             ) : (
               <>
                 <ShieldCheck className="w-5 h-5" />
-                <span>Confirm Booking & Generate OPD Pass</span>
+                <span>{t('apt.confirm_booking', 'Confirm Booking & Generate OPD Pass')}</span>
               </>
             )}
           </button>
@@ -776,9 +777,9 @@ export const AppointmentBookingFlow: React.FC = () => {
             <div className="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-2 ring-8 ring-emerald-50">
               <CheckCircle2 className="w-8 h-8" />
             </div>
-            <h2 className="text-xl font-black text-navy-900 tracking-tight">Appointment Confirmed!</h2>
+            <h2 className="text-xl font-black text-navy-900 tracking-tight">{t('apt.booking_confirmed', 'Appointment Confirmed!')}</h2>
             <p className="text-xs text-navy-500 mt-0.5">
-              Digital OPD token generated and saved under your account
+              {t('apt.booking_confirmed_desc', 'Digital OPD token generated and saved under your account')}
             </p>
           </div>
 
@@ -789,7 +790,7 @@ export const AppointmentBookingFlow: React.FC = () => {
                 <span className="text-[10px] font-black uppercase tracking-widest text-teal-200">
                   DIGITAL OPD PASS • TELANGANA HEALTH
                 </span>
-                <h3 className="font-extrabold text-sm text-white">{confirmedAppointment.hospitalName.split('(')[0]}</h3>
+                <h3 className="font-extrabold text-sm text-white">{translateHospitalName(confirmedAppointment.hospitalName.split('(')[0])}</h3>
               </div>
               <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full font-bold">
                 {confirmedAppointment.appointmentCode}
@@ -797,12 +798,12 @@ export const AppointmentBookingFlow: React.FC = () => {
             </div>
 
             <div className="text-center py-2">
-              <span className="text-xs text-navy-500 font-semibold uppercase tracking-wider">Assigned Queue Token</span>
+              <span className="text-xs text-navy-500 font-semibold uppercase tracking-wider">{t('apt.token_number', 'Assigned Queue Token')}</span>
               <div className="text-4xl font-black text-medical-700 tracking-tight my-1">
                 {confirmedAppointment.tokenNumber}
               </div>
               <div className="inline-block bg-teal-50 border border-teal-200 text-teal-800 text-xs px-3 py-1 rounded-full font-bold">
-                {confirmedAppointment.department} • {confirmedAppointment.roomNumber}
+                {translateDepartment(confirmedAppointment.department)} • {confirmedAppointment.roomNumber}
               </div>
             </div>
 
@@ -829,17 +830,17 @@ export const AppointmentBookingFlow: React.FC = () => {
                 </svg>
               </div>
               <span className="text-[10px] text-navy-500 font-medium mt-1.5">
-                Scan at Hospital Reception / Triage Kiosk
+                {t('queue.qr_instructions', 'Scan at Hospital Reception / Triage Kiosk')}
               </span>
             </div>
 
             <div className="grid grid-cols-2 gap-2 text-center text-xs">
               <div className="bg-navy-50 p-2 rounded-xl">
-                <span className="text-navy-400 text-[10px] block uppercase font-bold">Beneficiary</span>
+                <span className="text-navy-400 text-[10px] block uppercase font-bold">{t('apt.patient_name', 'Beneficiary')}</span>
                 <strong className="text-navy-900">{confirmedAppointment.beneficiaryName} ({confirmedAppointment.beneficiaryRelation})</strong>
               </div>
               <div className="bg-navy-50 p-2 rounded-xl">
-                <span className="text-navy-400 text-[10px] block uppercase font-bold">Slot</span>
+                <span className="text-navy-400 text-[10px] block uppercase font-bold">{t('common.time', 'Slot')}</span>
                 <strong className="text-medical-700">{confirmedAppointment.timeSlot.split(' - ')[0]}</strong>
               </div>
             </div>
@@ -851,7 +852,7 @@ export const AppointmentBookingFlow: React.FC = () => {
               onClick={() => setPatientTab('tokens')}
               className="w-full bg-medical-600 hover:bg-medical-700 text-white font-bold py-3 rounded-2xl text-xs flex items-center justify-center space-x-1.5 shadow-soft-sm active:scale-[0.98] transition-all"
             >
-              <span>Track Live Queue & Journey</span>
+              <span>{t('apt.view_queue', 'Track Live Queue & Journey')}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
 
@@ -859,7 +860,7 @@ export const AppointmentBookingFlow: React.FC = () => {
               onClick={() => setPatientTab('appointments')}
               className="w-full bg-white hover:bg-navy-50 border border-navy-200 text-navy-800 font-semibold py-2.5 rounded-2xl text-xs transition-colors"
             >
-              View in My Appointments
+              {t('apt.my_appointments_title', 'View in My Appointments')}
             </button>
           </div>
         </div>

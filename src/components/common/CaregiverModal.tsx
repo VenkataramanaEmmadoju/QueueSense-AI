@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Users, User, Heart, Plus, Check, X, ShieldCheck } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
 import { CaregiverProfile } from '../../types';
 
@@ -9,6 +10,7 @@ interface CaregiverModalProps {
 }
 
 export const CaregiverModal: React.FC<CaregiverModalProps> = ({ isOpen, onClose }) => {
+  const { t } = useTranslation();
   const { 
     patientProfile, 
     activePatientIdentity, 
@@ -46,6 +48,14 @@ export const CaregiverModal: React.FC<CaregiverModalProps> = ({ isOpen, onClose 
     setNewCondition('');
   };
 
+  const initials = patientProfile.name
+    .split(' ')
+    .filter(Boolean)
+    .map(w => w[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-navy-950/60 backdrop-blur-sm p-0 sm:p-4 animate-in fade-in">
       <div 
@@ -58,8 +68,8 @@ export const CaregiverModal: React.FC<CaregiverModalProps> = ({ isOpen, onClose 
               <Users className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-bold text-navy-900 text-sm">Caregiver & Family Mode</h3>
-              <p className="text-[11px] text-navy-500">Manage queue tokens for dependent family members</p>
+              <h3 className="font-bold text-navy-900 text-sm">{t('modal.caregiver_title', 'Select Active Patient Identity')}</h3>
+              <p className="text-[11px] text-navy-500">{t('modal.caregiver_subtitle', 'Switch identity between yourself and family members')}</p>
             </div>
           </div>
           <button onClick={onClose} className="p-1.5 text-navy-400 hover:text-navy-700 rounded-full hover:bg-navy-100">
@@ -79,15 +89,15 @@ export const CaregiverModal: React.FC<CaregiverModalProps> = ({ isOpen, onClose 
           >
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 rounded-xl bg-medical-100 text-medical-800 font-bold flex items-center justify-center text-sm">
-                VS
+                {initials}
               </div>
               <div>
                 <div className="flex items-center space-x-1.5">
                   <span className="font-bold text-navy-900 text-sm">{patientProfile.name}</span>
-                  <span className="text-[10px] bg-medical-200 text-medical-900 px-1.5 py-0.5 rounded font-semibold uppercase">Self</span>
+                  <span className="text-[10px] bg-medical-200 text-medical-900 px-1.5 py-0.5 rounded font-semibold uppercase">{t('home.myself', 'Self')}</span>
                 </div>
                 <div className="text-xs text-navy-500 mt-0.5">
-                  Age: {patientProfile.age} | ABHA: {patientProfile.abhaId}
+                  {t('family.modal_age_label', 'Age')}: {patientProfile.age} | ABHA: {patientProfile.abhaId}
                 </div>
               </div>
             </div>

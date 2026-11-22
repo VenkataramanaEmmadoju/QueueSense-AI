@@ -14,9 +14,12 @@ import {
   Building2,
   CheckCircle2
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
+import { translateBedCategory, translateHospitalName } from '../../i18n/translateHelpers';
 
 export const BedAvailabilityView: React.FC = () => {
+  const { t } = useTranslation();
   const { 
     bedCategories, 
     selectedHospital, 
@@ -32,13 +35,13 @@ export const BedAvailabilityView: React.FC = () => {
 
   const handleRefreshBeds = () => {
     if (!isOnline) {
-      addToast('Cannot refresh offline', 'Bed telemetry requires active network connection', 'system');
+      addToast(t('common.warning', 'Cannot refresh offline'), t('common.offline_alert', 'Bed telemetry requires active network connection'), 'system');
       return;
     }
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-      addToast('Bed Inventory Synced', 'Live telemetry from TIMS Central Admissions Desk');
+      addToast(t('common.success', 'Bed Inventory Synced'), t('beds.last_updated', 'Live telemetry from Central Admissions Desk'));
     }, 500);
   };
 
@@ -61,7 +64,7 @@ export const BedAvailabilityView: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <span className="text-[10px] font-black uppercase text-medical-700 tracking-wider">HOSPITAL CAPACITY RADAR</span>
-          <h2 className="text-xl font-black text-navy-900 tracking-tight">Live Bed Availability</h2>
+          <h2 className="text-xl font-black text-navy-900 tracking-tight">{t('beds.title', 'Live Bed Availability')}</h2>
         </div>
         <button
           onClick={handleRefreshBeds}
@@ -69,7 +72,7 @@ export const BedAvailabilityView: React.FC = () => {
           className="flex items-center space-x-1 text-xs text-medical-700 bg-medical-50 hover:bg-medical-100 font-semibold px-3 py-1.5 rounded-xl border border-medical-200 transition-all active:scale-95"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
-          <span>Sync Beds</span>
+          <span>{t('common.refresh', 'Sync Beds')}</span>
         </button>
       </div>
 
@@ -78,7 +81,7 @@ export const BedAvailabilityView: React.FC = () => {
         <div className="bg-amber-50 border border-amber-300 rounded-2xl p-3.5 text-xs text-amber-900 flex items-start space-x-2.5 shadow-soft-sm">
           <WifiOff className="w-4 h-4 text-amber-700 shrink-0 mt-0.5 animate-pulse" />
           <div className="leading-relaxed">
-            <strong>Bed Telemetry Paused (Offline):</strong> In accordance with public healthcare safety rules, QueueSense does not display stale bed counts or admit requests while disconnected. Reconnect to resume live bed reservation.
+            <strong>{t('common.offline', 'Offline')}:</strong> {t('common.offline_alert', 'In accordance with public healthcare safety rules, QueueSense does not display stale bed counts or admit requests while disconnected. Reconnect to resume live bed reservation.')}
           </div>
         </div>
       )}
@@ -86,7 +89,7 @@ export const BedAvailabilityView: React.FC = () => {
       {/* Hospital Switcher Card */}
       <div className="bg-white border border-navy-200/80 rounded-3xl p-4 shadow-soft-sm">
         <label className="text-[11px] font-bold text-navy-500 uppercase tracking-wider block mb-1.5">
-          Active Facility (Telangana Health Grid)
+          {t('hosp.active_facility', 'Active Facility (Telangana Health Grid)')}
         </label>
         <select
           value={selectedHospital.id}
@@ -98,7 +101,7 @@ export const BedAvailabilityView: React.FC = () => {
         >
           {hospitals.map(hosp => (
             <option key={hosp.id} value={hosp.id}>
-              {hosp.name} ({hosp.district})
+              {translateHospitalName(hosp.name)} ({hosp.district})
             </option>
           ))}
         </select>
@@ -112,7 +115,7 @@ export const BedAvailabilityView: React.FC = () => {
             className="text-medical-700 font-semibold flex items-center space-x-1 hover:underline"
           >
             <PhoneCall className="w-3 h-3" />
-            <span>Helpdesk</span>
+            <span>{t('hosp.call_hospital', 'Helpdesk')}</span>
           </a>
         </div>
       </div>
@@ -120,9 +123,9 @@ export const BedAvailabilityView: React.FC = () => {
       {/* Overall Capacity Gauge */}
       <div className="bg-gradient-to-r from-medical-900 to-navy-900 text-white rounded-3xl p-4 sm:p-5 shadow-soft-md">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-xs text-medical-200 font-bold uppercase tracking-wider">Facility Occupancy</span>
+          <span className="text-xs text-medical-200 font-bold uppercase tracking-wider">{t('beds.total_available', 'Facility Occupancy')}</span>
           <span className="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full font-bold">
-            {totalAvailable} Beds Vacant
+            {totalAvailable} {t('beds.available', 'Beds Vacant')}
           </span>
         </div>
 
@@ -136,15 +139,15 @@ export const BedAvailabilityView: React.FC = () => {
 
         <div className="grid grid-cols-3 gap-2 text-center text-xs">
           <div className="bg-white/5 rounded-xl p-2">
-            <span className="text-slate-400 text-[10px] uppercase block">Total Beds</span>
+            <span className="text-slate-400 text-[10px] uppercase block">{t('beds.total_capacity', 'Total Beds')}</span>
             <span className="text-base font-extrabold">{totalBeds}</span>
           </div>
           <div className="bg-white/5 rounded-xl p-2">
-            <span className="text-slate-400 text-[10px] uppercase block">Occupied</span>
+            <span className="text-slate-400 text-[10px] uppercase block">{t('beds.occupied', 'Occupied')}</span>
             <span className="text-base font-extrabold text-amber-300">{totalOccupied}</span>
           </div>
           <div className="bg-white/5 rounded-xl p-2">
-            <span className="text-slate-400 text-[10px] uppercase block">Available</span>
+            <span className="text-slate-400 text-[10px] uppercase block">{t('beds.available', 'Available')}</span>
             <span className="text-base font-extrabold text-emerald-300">{totalAvailable}</span>
           </div>
         </div>
@@ -153,9 +156,9 @@ export const BedAvailabilityView: React.FC = () => {
       {/* Filter Chips */}
       <div className="flex items-center space-x-2 overflow-x-auto no-scrollbar py-1">
         {[
-          { id: 'all', label: 'All Wards' },
-          { id: 'icu', label: 'ICU / CCU' },
-          { id: 'oxygen', label: 'Oxygen Wards' },
+          { id: 'all', label: t('common.all', 'All Wards') },
+          { id: 'icu', label: t('hosp.icu_beds', 'ICU / CCU') },
+          { id: 'oxygen', label: t('hosp.oxygen_beds', 'Oxygen Wards') },
           { id: 'pediatric', label: 'Pediatric' },
           { id: 'maternity', label: 'Maternity' },
           { id: 'general', label: 'General' },
@@ -197,9 +200,9 @@ export const BedAvailabilityView: React.FC = () => {
                     <BedDouble className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-navy-950 text-sm">{cat.name}</h3>
+                    <h3 className="font-bold text-navy-950 text-sm">{translateBedCategory(cat.name)}</h3>
                     <p className="text-[11px] text-navy-500">
-                      {isOnline ? cat.lastUpdated : 'Offline: Telemetry Stale'}
+                      {isOnline ? cat.lastUpdated : t('common.offline_alert', 'Offline')}
                     </p>
                   </div>
                 </div>
@@ -210,15 +213,15 @@ export const BedAvailabilityView: React.FC = () => {
                   }`}>
                     {cat.available}
                   </span>
-                  <span className="text-xs text-navy-500 block -mt-0.5">vacant</span>
+                  <span className="text-xs text-navy-500 block -mt-0.5">{t('beds.available', 'vacant')}</span>
                 </div>
               </div>
 
               {/* Occupancy bar */}
               <div className="mt-3">
                 <div className="flex justify-between text-[11px] text-navy-500 mb-1 font-medium">
-                  <span>Occupied: {cat.occupied} of {cat.total}</span>
-                  <span>{occupancyRate}% full</span>
+                  <span>{t('beds.occupied', 'Occupied')}: {cat.occupied} / {cat.total}</span>
+                  <span>{occupancyRate}%</span>
                 </div>
                 <div className="w-full bg-navy-100 rounded-full h-2 overflow-hidden">
                   <div
@@ -232,10 +235,10 @@ export const BedAvailabilityView: React.FC = () => {
 
               <div className="mt-3 pt-2.5 border-t border-navy-100 flex items-center justify-between text-[11px]">
                 <span className="text-navy-500">
-                  Reserved Emergency Buffer: <strong>{cat.reservedEmergency} beds</strong>
+                  {t('beds.emergency_reserved', 'Reserved Emergency Buffer')}: <strong>{cat.reservedEmergency} {t('hosp.beds', 'beds')}</strong>
                 </span>
                 <span className="text-medical-700 font-semibold">
-                  Avg stay: ~{cat.turnaroundAvgHours}h
+                  {t('beds.turnaround', 'Avg stay')}: ~{cat.turnaroundAvgHours}{t('beds.hours', 'h')}
                 </span>
               </div>
             </div>

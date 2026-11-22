@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Download, X, Sparkles, CheckCircle2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
 
 export const PWAInstallBanner: React.FC = () => {
+  const { t } = useTranslation();
   const { installPWA } = useApp();
   const [dismissed, setDismissed] = useState(false);
   const [installedNotice, setInstalledNotice] = useState(false);
@@ -24,7 +26,7 @@ export const PWAInstallBanner: React.FC = () => {
           </div>
           <div className="truncate">
             <div className="flex items-center space-x-1.5 font-bold tracking-tight text-white text-[13px]">
-              <span>Install QueueSense App</span>
+              <span>{t('profile.install_pwa', 'Install QueueSense App')}</span>
               <span className="bg-medical-400/20 text-medical-200 text-[10px] px-1.5 py-0.2 rounded font-semibold uppercase">PWA</span>
             </div>
             <p className="text-[11px] text-teal-100/80 truncate">
@@ -45,7 +47,7 @@ export const PWAInstallBanner: React.FC = () => {
               className="bg-medical-500 hover:bg-medical-400 text-white font-semibold px-3 py-1.5 rounded-lg flex items-center space-x-1.5 text-xs transition-all shadow-sm active:scale-95"
             >
               <Download className="w-3.5 h-3.5" />
-              <span>Install App</span>
+              <span>{t('profile.install_btn', 'Install App')}</span>
             </button>
           )}
 

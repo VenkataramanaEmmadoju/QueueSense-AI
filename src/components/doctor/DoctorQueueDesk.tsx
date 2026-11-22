@@ -7,21 +7,23 @@ import {
   CheckCircle2, 
   Sparkles, 
   Clock, 
-  Activity,
-  ArrowRight,
-  Filter
+  Activity, 
+  ArrowRight, 
+  Filter 
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
 import { OPDToken } from '../../types';
 
 export const DoctorQueueDesk: React.FC = () => {
+  const { t } = useTranslation();
   const { 
     doctorQueueTokens, 
-    activeConsultationToken,
-    startDoctorConsultation,
-    updateTokenStatus,
-    callNextDoctorToken,
-    addToast
+    activeConsultationToken, 
+    startDoctorConsultation, 
+    updateTokenStatus, 
+    callNextDoctorToken, 
+    addToast 
   } = useApp();
 
   const [filter, setFilter] = useState<'all' | 'waiting' | 'completed'>('waiting');
@@ -34,12 +36,12 @@ export const DoctorQueueDesk: React.FC = () => {
 
   const handleCallPatient = (token: OPDToken) => {
     updateTokenStatus(token.id, 'serving');
-    addToast(`Calling Token ${token.tokenNumber}`, `Announcing ${token.patientName} for Cardiology Room 104`, 'token');
+    addToast(t('doctor.btn_call', 'Calling Patient'), `${token.tokenNumber}: ${token.patientName}`, 'token');
   };
 
   const handleHoldPatient = (token: OPDToken) => {
     updateTokenStatus(token.id, 'hold');
-    addToast(`Token ${token.tokenNumber} on Hold`, `${token.patientName} placed on temporary hold for diagnostics`, 'system');
+    addToast(t('doctor.put_on_hold', 'Token on Hold'), `${token.tokenNumber}: ${token.patientName}`, 'system');
   };
 
   return (
@@ -50,7 +52,7 @@ export const DoctorQueueDesk: React.FC = () => {
           <span className="text-xs font-bold text-teal-700 uppercase tracking-wider">
             Cardiology OPD • Room 104 Live Queue
           </span>
-          <h2 className="text-2xl font-black text-slate-900 mt-1">Assigned Patient Queue</h2>
+          <h2 className="text-2xl font-black text-slate-900 mt-1">{t('doctor.nav_queue', 'Assigned Patient Queue')}</h2>
           <p className="text-xs text-slate-500 mt-0.5">
             Real-time token sequencing, vitals pre-check and examination room call-in
           </p>
@@ -62,7 +64,7 @@ export const DoctorQueueDesk: React.FC = () => {
             className="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white font-extrabold px-4 py-2.5 rounded-xl text-xs flex items-center space-x-2 shadow-soft-sm"
           >
             <PhoneCall className="w-4 h-4" />
-            <span>Call Next in Line</span>
+            <span>{t('doctor.call_next_patient', 'Call Next in Line')}</span>
           </button>
         </div>
       </div>
@@ -75,7 +77,7 @@ export const DoctorQueueDesk: React.FC = () => {
             filter === 'waiting' ? 'bg-teal-600 text-white shadow-soft-xs' : 'text-slate-600 hover:bg-slate-200'
           }`}
         >
-          Waiting & Active ({doctorQueueTokens.filter(t => t.status === 'waiting' || t.status === 'serving').length})
+          {t('status.waiting', 'Waiting')} & Active ({doctorQueueTokens.filter(t => t.status === 'waiting' || t.status === 'serving').length})
         </button>
         <button
           onClick={() => setFilter('all')}
@@ -83,7 +85,7 @@ export const DoctorQueueDesk: React.FC = () => {
             filter === 'all' ? 'bg-teal-600 text-white shadow-soft-xs' : 'text-slate-600 hover:bg-slate-200'
           }`}
         >
-          All Tokens ({doctorQueueTokens.length})
+          {t('common.all', 'All Tokens')} ({doctorQueueTokens.length})
         </button>
         <button
           onClick={() => setFilter('completed')}
@@ -91,7 +93,7 @@ export const DoctorQueueDesk: React.FC = () => {
             filter === 'completed' ? 'bg-teal-600 text-white shadow-soft-xs' : 'text-slate-600 hover:bg-slate-200'
           }`}
         >
-          Completed Today ({doctorQueueTokens.filter(t => t.status === 'completed').length})
+          {t('status.completed', 'Completed Today')} ({doctorQueueTokens.filter(t => t.status === 'completed').length})
         </button>
       </div>
 
@@ -176,7 +178,7 @@ export const DoctorQueueDesk: React.FC = () => {
                         title="Announce Call"
                       >
                         <PhoneCall className="w-3.5 h-3.5 text-teal-600" />
-                        <span>Call In</span>
+                        <span>{t('doctor.btn_call', 'Call In')}</span>
                       </button>
 
                       <button
@@ -184,7 +186,7 @@ export const DoctorQueueDesk: React.FC = () => {
                         className="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 px-3 py-2 rounded-xl text-xs font-bold flex items-center space-x-1"
                       >
                         <Pause className="w-3.5 h-3.5" />
-                        <span>Hold</span>
+                        <span>{t('doctor.put_on_hold', 'Hold')}</span>
                       </button>
 
                       <button
@@ -192,7 +194,7 @@ export const DoctorQueueDesk: React.FC = () => {
                         className="bg-teal-600 hover:bg-teal-700 text-white font-extrabold px-4 py-2 rounded-xl text-xs flex items-center space-x-1.5 shadow-soft-xs"
                       >
                         <Play className="w-3.5 h-3.5" />
-                        <span>Begin Consult</span>
+                        <span>{t('doctor.btn_start', 'Begin Consult')}</span>
                       </button>
                     </>
                   )}
@@ -200,7 +202,7 @@ export const DoctorQueueDesk: React.FC = () => {
                   {isCompleted && (
                     <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl flex items-center space-x-1">
                       <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                      <span>Consultation Finished</span>
+                      <span>{t('status.completed', 'Consultation Finished')}</span>
                     </span>
                   )}
                 </div>

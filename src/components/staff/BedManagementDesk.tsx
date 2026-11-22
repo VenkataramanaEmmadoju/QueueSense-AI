@@ -1,8 +1,11 @@
 import React from 'react';
 import { BedDouble, Plus, Minus, ShieldAlert, CheckCircle2, RefreshCw } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
+import { translateBedCategory, translateHospitalName } from '../../i18n/translateHelpers';
 
 export const BedManagementDesk: React.FC = () => {
+  const { t } = useTranslation();
   const { bedCategories, updateBedCount, selectedHospital, addToast } = useApp();
 
   return (
@@ -10,8 +13,8 @@ export const BedManagementDesk: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
           <span className="text-[10px] font-black uppercase text-medical-700 tracking-wider">INPATIENT ADMISSIONS BUREAU</span>
-          <h2 className="text-xl font-black text-navy-900 tracking-tight">Live Bed Management Bureau</h2>
-          <p className="text-xs text-navy-500">{selectedHospital.name.split('(')[0]}</p>
+          <h2 className="text-xl font-black text-navy-900 tracking-tight">{t('staff.nav_beds', 'Live Bed Management Bureau')}</h2>
+          <p className="text-xs text-navy-500">{translateHospitalName(selectedHospital.name.split('(')[0])}</p>
         </div>
       </div>
 
@@ -34,21 +37,21 @@ export const BedManagementDesk: React.FC = () => {
                     <BedDouble className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-extrabold text-navy-950 text-sm">{cat.name}</h3>
-                    <p className="text-[11px] text-navy-500">Total Capacity: {cat.total} beds</p>
+                    <h3 className="font-extrabold text-navy-950 text-sm">{translateBedCategory(cat.name)}</h3>
+                    <p className="text-[11px] text-navy-500">{t('beds.total_capacity', 'Total Capacity')}: {cat.total} {t('hosp.beds', 'beds')}</p>
                   </div>
                 </div>
 
                 <div className="text-right">
                   <span className="text-2xl font-black text-emerald-700">{cat.available}</span>
-                  <span className="text-[10px] text-navy-400 block font-bold uppercase">Vacant</span>
+                  <span className="text-[10px] text-navy-400 block font-bold uppercase">{t('beds.available', 'Vacant')}</span>
                 </div>
               </div>
 
               {/* Progress */}
               <div>
                 <div className="flex justify-between text-[11px] text-navy-500 mb-1 font-medium">
-                  <span>Occupied: {cat.occupied}</span>
+                  <span>{t('beds.occupied', 'Occupied')}: {cat.occupied}</span>
                   <span>{occupancyRate}% full</span>
                 </div>
                 <div className="w-full bg-navy-100 rounded-full h-2 overflow-hidden">
@@ -74,7 +77,7 @@ export const BedManagementDesk: React.FC = () => {
                   className="flex-1 bg-medical-50 hover:bg-medical-100 disabled:opacity-50 text-medical-800 text-xs font-bold py-2 rounded-xl flex items-center justify-center space-x-1 border border-medical-200 transition-all active:scale-95"
                 >
                   <Plus className="w-3.5 h-3.5" />
-                  <span>Admit Patient</span>
+                  <span>{t('staff.admit_patient', 'Admit Patient')}</span>
                 </button>
 
                 <button
@@ -88,7 +91,7 @@ export const BedManagementDesk: React.FC = () => {
                   className="flex-1 bg-navy-50 hover:bg-navy-100 disabled:opacity-50 text-navy-800 text-xs font-semibold py-2 rounded-xl flex items-center justify-center space-x-1 border border-navy-200 transition-all active:scale-95"
                 >
                   <Minus className="w-3.5 h-3.5" />
-                  <span>Discharge / Free</span>
+                  <span>{t('staff.discharge_patient', 'Discharge / Free')}</span>
                 </button>
 
                 <button

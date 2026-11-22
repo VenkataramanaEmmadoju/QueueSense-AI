@@ -1,15 +1,18 @@
 import React from 'react';
 import { Calendar, Clock, User, CheckCircle2, PhoneCall, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
+import { translateStatus } from '../../i18n/translateHelpers';
 
 export const DoctorAppointmentsView: React.FC = () => {
+  const { t } = useTranslation();
   const { doctorQueueTokens, startDoctorConsultation, currentDoctorUser } = useApp();
 
   const slots = [
     { time: '09:00 AM - 09:30 AM', token: 'A-101', patient: 'Laxmi Bai', age: 62, status: 'completed' },
     { time: '09:30 AM - 10:00 AM', token: 'A-102', patient: 'G. Suresh Kumar', age: 48, status: 'completed' },
     { time: '10:00 AM - 10:30 AM', token: 'A-103', patient: 'K. Padma', age: 54, status: 'completed' },
-    { time: '10:30 AM - 11:00 AM', token: 'A-104', patient: 'Venkataramana Santhu', age: 34, status: 'waiting' },
+    { time: '10:30 AM - 11:00 AM', token: 'A-104', patient: 'Rahul Kumar', age: 34, status: 'waiting' },
     { time: '11:00 AM - 11:30 AM', token: 'A-105', patient: 'Ananya Santhu', age: 6, status: 'waiting' },
     { time: '11:30 AM - 12:00 PM', token: 'A-106', patient: 'S. Narsimha', age: 71, status: 'waiting' },
     { time: '12:00 PM - 12:30 PM', token: 'A-107', patient: 'B. Renuka', age: 39, status: 'waiting' },
@@ -23,9 +26,9 @@ export const DoctorAppointmentsView: React.FC = () => {
       <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-soft-sm flex items-center justify-between">
         <div>
           <span className="text-xs font-bold text-teal-700 uppercase tracking-wider">
-            OPD Schedule Schedule & Booking Register
+            OPD Schedule & Booking Register
           </span>
-          <h2 className="text-2xl font-black text-slate-900 mt-0.5">Today's Scheduled Appointments</h2>
+          <h2 className="text-2xl font-black text-slate-900 mt-0.5">{t('doctor.nav_appointments', "Today's Scheduled Appointments")}</h2>
           <p className="text-xs text-slate-500">
             {currentDoctorUser.name} • Cardiology OPD Room 104 • {slots.length} Booked Slots
           </p>
@@ -40,11 +43,11 @@ export const DoctorAppointmentsView: React.FC = () => {
       {/* Appointments Timeline Table */}
       <div className="bg-white rounded-3xl border border-slate-200/80 shadow-soft-sm overflow-hidden">
         <div className="p-4 border-b border-slate-200 bg-slate-50/50 flex items-center justify-between text-xs font-bold text-slate-600">
-          <span>Time Slot</span>
-          <span>Patient Details</span>
-          <span>Token #</span>
-          <span>Status</span>
-          <span>Action</span>
+          <span>{t('common.time', 'Time Slot')}</span>
+          <span>{t('doctor.table_patient', 'Patient Details')}</span>
+          <span>{t('doctor.table_token', 'Token #')}</span>
+          <span>{t('doctor.table_status', 'Status')}</span>
+          <span>{t('doctor.table_action', 'Action')}</span>
         </div>
 
         <div className="divide-y divide-slate-100">
@@ -74,7 +77,7 @@ export const DoctorAppointmentsView: React.FC = () => {
                   <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
                     isCompleted ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
                   }`}>
-                    {isCompleted ? 'COMPLETED' : 'WAITING'}
+                    {translateStatus(s.status).toUpperCase()}
                   </span>
                 </div>
 
@@ -84,13 +87,13 @@ export const DoctorAppointmentsView: React.FC = () => {
                       onClick={() => startDoctorConsultation(matchedToken)}
                       className="bg-teal-600 hover:bg-teal-700 text-white font-bold px-3 py-1.5 rounded-xl text-[11px] inline-flex items-center space-x-1"
                     >
-                      <span>Call Now</span>
+                      <span>{t('doctor.btn_call', 'Call Now')}</span>
                       <ArrowRight className="w-3 h-3" />
                     </button>
                   ) : isCompleted ? (
                     <span className="text-[11px] text-emerald-700 font-semibold inline-flex items-center space-x-1">
                       <CheckCircle2 className="w-3.5 h-3.5" />
-                      <span>Finished</span>
+                      <span>{t('status.completed', 'Finished')}</span>
                     </span>
                   ) : (
                     <span className="text-[11px] text-slate-400">Scheduled</span>

@@ -19,6 +19,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
 import { DEMO_DATA_NOTICE } from '../../data/syntheticData';
+import { translateDepartment, translateStatus, translateHospitalName } from '../../i18n/translateHelpers';
 
 export const PatientHome: React.FC = () => {
   const { t } = useTranslation();
@@ -48,8 +49,8 @@ export const PatientHome: React.FC = () => {
       <div className="bg-gradient-to-r from-medical-50 to-teal-50/70 border border-medical-200/60 rounded-2xl p-2.5 px-3 flex items-start space-x-2.5 shadow-soft-xs">
         <Info className="w-4 h-4 text-medical-700 shrink-0 mt-0.5" />
         <div className="text-[11px] text-navy-700 leading-tight">
-          <span className="font-bold text-medical-800">Operational Prototype: </span>
-          {DEMO_DATA_NOTICE}. Real-time patient & staff flows active for evaluation.
+          <span className="font-bold text-medical-800">{t('app.demo_notice_title')} </span>
+          {t('app.demo_notice_desc')}
         </div>
       </div>
 
@@ -66,11 +67,11 @@ export const PatientHome: React.FC = () => {
               <div className="space-y-1">
                 <div className="flex items-center space-x-2">
                   <span className="text-xs text-teal-300 font-bold tracking-wide uppercase">
-                    Namaste / Welcome
+                    {t('home.welcome')}
                   </span>
                   {activePatientIdentity !== 'self' && (
                     <span className="bg-teal-500/20 text-teal-300 border border-teal-400/40 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
-                      Caregiver: {activePatientIdentity.relationship}
+                      {t('home.caregiver')} {activePatientIdentity.relationship}
                     </span>
                   )}
                 </div>
@@ -81,11 +82,11 @@ export const PatientHome: React.FC = () => {
 
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-1 text-xs text-slate-300">
                   <span className="font-mono text-slate-300">
-                    UHID: {currentUser?.uhidDemoNumber || patientProfile.uhid}
+                    {t('home.uhid')} {currentUser?.uhidDemoNumber || patientProfile.uhid}
                   </span>
                   <span className="text-slate-600">•</span>
                   <span className="bg-white/10 text-slate-200 border border-white/15 text-[10px] font-semibold px-2 py-0.5 rounded-md">
-                    ABHA Demo Placeholder (Unverified)
+                    {t('home.abha_placeholder')}
                   </span>
                 </div>
               </div>
@@ -100,12 +101,12 @@ export const PatientHome: React.FC = () => {
             <div className="mt-5 pt-3.5 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs">
               <div className="flex items-center space-x-2 text-slate-300 truncate">
                 <MapPin className="w-3.5 h-3.5 text-teal-400 shrink-0" />
-                <span className="font-semibold truncate">{selectedHospital.name.split('(')[0]}</span>
+                <span className="font-semibold truncate">{translateHospitalName(selectedHospital.name)}</span>
               </div>
               
               {/* High-Contrast Unverified Aarogyasri Scheme Demo Badge */}
               <span className="bg-teal-500/20 text-teal-300 border border-teal-500/40 text-[10px] font-bold px-2.5 py-1 rounded-full shrink-0">
-                Demo Scheme Info (Unverified Aarogyasri)
+                {t('home.unverified_aarogyasri')}
               </span>
             </div>
           </div>
@@ -114,7 +115,7 @@ export const PatientHome: React.FC = () => {
           {activePatientToken ? (
             <div className="bg-white border-2 border-teal-500/30 rounded-3xl p-5 shadow-soft-md relative overflow-hidden">
               <div className="absolute top-0 right-0 bg-teal-600 text-white text-[10px] font-black uppercase px-3.5 py-1 rounded-bl-xl tracking-wider">
-                Live Queue Active
+                {t('home.active_token_title')}
               </div>
 
               <div className="flex items-center space-x-3.5 mb-3">
@@ -122,8 +123,8 @@ export const PatientHome: React.FC = () => {
                   {activePatientToken.tokenNumber}
                 </div>
                 <div>
-                  <div className="text-xs text-navy-500 font-medium">Digital OPD Pass</div>
-                  <h3 className="font-extrabold text-navy-950 text-base">{activePatientToken.department}</h3>
+                  <div className="text-xs text-navy-500 font-medium">{t('home.digital_opd_pass')}</div>
+                  <h3 className="font-extrabold text-navy-950 text-base">{translateDepartment(activePatientToken.department)}</h3>
                   <p className="text-xs text-teal-700 font-semibold">{activePatientToken.doctorName} • {activePatientToken.roomNumber}</p>
                 </div>
               </div>
@@ -131,21 +132,21 @@ export const PatientHome: React.FC = () => {
               {/* Metrics Grid */}
               <div className="grid grid-cols-3 gap-2 bg-slate-50 p-3 rounded-2xl border border-slate-200 my-3 text-center">
                 <div>
-                  <div className="text-[10px] text-slate-500 font-semibold uppercase">Ahead of You</div>
+                  <div className="text-[10px] text-slate-500 font-semibold uppercase">{t('home.ahead_of_you')}</div>
                   <div className="text-lg font-black text-slate-900 mt-0.5">
-                    {activePatientToken.peopleAhead} {activePatientToken.peopleAhead === 1 ? 'patient' : 'patients'}
+                    {activePatientToken.peopleAhead} {activePatientToken.peopleAhead === 1 ? t('home.patient_singular') : t('home.patient_plural')}
                   </div>
                 </div>
                 <div className="border-x border-slate-200">
-                  <div className="text-[10px] text-slate-500 font-semibold uppercase">Est. Consult</div>
+                  <div className="text-[10px] text-slate-500 font-semibold uppercase">{t('home.est_consult')}</div>
                   <div className="text-lg font-black text-teal-700 mt-0.5">
                     {activePatientToken.estimatedConsultTime}
                   </div>
                 </div>
                 <div>
-                  <div className="text-[10px] text-slate-500 font-semibold uppercase">Token State</div>
+                  <div className="text-[10px] text-slate-500 font-semibold uppercase">{t('home.token_state')}</div>
                   <div className="text-xs font-bold text-amber-700 bg-amber-50 border border-amber-200 rounded-lg py-1 px-1 mt-1 uppercase">
-                    {activePatientToken.status}
+                    {translateStatus(activePatientToken.status)}
                   </div>
                 </div>
               </div>
@@ -160,23 +161,23 @@ export const PatientHome: React.FC = () => {
                 onClick={() => setPatientTab('tokens')}
                 className="w-full bg-teal-600 hover:bg-teal-700 active:scale-[0.98] text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center space-x-1.5 transition-all shadow-soft-sm"
               >
-                <span>View Full Journey Timeline & QR Pass</span>
+                <span>{t('home.view_full_journey')}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           ) : (
             <div className="bg-white border border-navy-200/80 rounded-3xl p-5 shadow-soft-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="space-y-1">
-                <span className="text-[11px] font-bold text-teal-700 uppercase tracking-wider">No Active Waiting Token</span>
-                <h3 className="font-extrabold text-navy-950 text-sm sm:text-base">Ready for your OPD appointment?</h3>
-                <p className="text-xs text-navy-500">Book in under 30 seconds with instant digital token pass</p>
+                <span className="text-[11px] font-bold text-teal-700 uppercase tracking-wider">{t('home.no_active_token')}</span>
+                <h3 className="font-extrabold text-navy-950 text-sm sm:text-base">{t('home.book_opd_appointment')}</h3>
+                <p className="text-xs text-navy-500">{t('home.no_token_desc')}</p>
               </div>
               <button
                 onClick={() => setPatientTab('booking')}
                 className="bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center space-x-1.5 shadow-soft-sm active:scale-95 shrink-0 self-start sm:self-auto"
               >
                 <CalendarPlus className="w-4 h-4" />
-                <span>Book OPD Now</span>
+                <span>{t('home.book_opd_appointment')}</span>
               </button>
             </div>
           )}
@@ -184,7 +185,7 @@ export const PatientHome: React.FC = () => {
           {/* HEALTHCARE SERVICES 2x2 / 4-COLUMN RESPONSIVE GRID */}
           <div>
             <div className="flex items-center justify-between mb-3 px-1">
-              <h3 className="text-xs font-bold text-navy-600 uppercase tracking-wider">Healthcare Services</h3>
+              <h3 className="text-xs font-bold text-navy-600 uppercase tracking-wider">{t('home.services_title')}</h3>
               <span className="text-[11px] text-navy-400">PWA Modules</span>
             </div>
 
@@ -197,12 +198,12 @@ export const PatientHome: React.FC = () => {
                 <div className="w-10 h-10 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
                   <CalendarPlus className="w-5 h-5" />
                 </div>
-                <h4 className="font-bold text-navy-950 text-xs sm:text-sm">Book OPD</h4>
+                <h4 className="font-bold text-navy-950 text-xs sm:text-sm">{t('home.service_book_opd')}</h4>
                 <p className="text-[11px] text-navy-500 mt-1 leading-tight">
-                  Fast token booking across 8 specialties
+                  {t('home.service_book_opd_desc')}
                 </p>
                 <div className="flex items-center text-xs text-teal-600 font-semibold mt-2.5 group-hover:translate-x-1 transition-transform">
-                  <span>Start</span>
+                  <span>{t('apt.next_step')}</span>
                   <ArrowRight className="w-3.5 h-3.5 ml-1" />
                 </div>
               </button>
@@ -216,16 +217,16 @@ export const PatientHome: React.FC = () => {
                   <Users className="w-5 h-5" />
                 </div>
                 <div className="flex items-center space-x-1">
-                  <h4 className="font-bold text-navy-950 text-xs sm:text-sm">My Family</h4>
+                  <h4 className="font-bold text-navy-950 text-xs sm:text-sm">{t('home.service_family')}</h4>
                   <span className="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-1.5 rounded-full">
                     {familyMembers.length}
                   </span>
                 </div>
                 <p className="text-[11px] text-navy-500 mt-1 leading-tight">
-                  Manage parents, spouse and children
+                  {t('home.service_family_desc')}
                 </p>
                 <div className="flex items-center text-xs text-indigo-700 font-semibold mt-2.5 group-hover:translate-x-1 transition-transform">
-                  <span>Profiles</span>
+                  <span>{t('common.details')}</span>
                   <ArrowRight className="w-3.5 h-3.5 ml-1" />
                 </div>
               </button>
@@ -239,16 +240,16 @@ export const PatientHome: React.FC = () => {
                   <BedDouble className="w-5 h-5" />
                 </div>
                 <div className="flex items-center space-x-1">
-                  <h4 className="font-bold text-navy-950 text-xs sm:text-sm">Live Beds</h4>
+                  <h4 className="font-bold text-navy-950 text-xs sm:text-sm">{t('home.service_live_beds')}</h4>
                   <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-1.5 rounded-full">
                     {totalAvailableBeds}
                   </span>
                 </div>
                 <p className="text-[11px] text-navy-500 mt-1 leading-tight">
-                  Track ICU & ward bed availability
+                  {t('home.service_live_beds_desc')}
                 </p>
                 <div className="flex items-center text-xs text-emerald-700 font-semibold mt-2.5 group-hover:translate-x-1 transition-transform">
-                  <span>Wards</span>
+                  <span>{t('common.details')}</span>
                   <ArrowRight className="w-3.5 h-3.5 ml-1" />
                 </div>
               </button>
@@ -261,12 +262,12 @@ export const PatientHome: React.FC = () => {
                 <div className="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
                   <MessageSquareHeart className="w-5 h-5" />
                 </div>
-                <h4 className="font-bold text-navy-950 text-xs sm:text-sm">CivicCare</h4>
+                <h4 className="font-bold text-navy-950 text-xs sm:text-sm">{t('home.service_civiccare')}</h4>
                 <p className="text-[11px] text-navy-500 mt-1 leading-tight">
-                  Report sanitation & hospital issues
+                  {t('home.service_civiccare_desc')}
                 </p>
                 <div className="flex items-center text-xs text-amber-700 font-semibold mt-2.5 group-hover:translate-x-1 transition-transform">
-                  <span>Report</span>
+                  <span>{t('common.details')}</span>
                   <ArrowRight className="w-3.5 h-3.5 ml-1" />
                 </div>
               </button>
@@ -288,8 +289,8 @@ export const PatientHome: React.FC = () => {
                   <Calendar className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-navy-950 text-xs sm:text-sm">My Appointments</h4>
-                  <p className="text-[11px] text-navy-500">{upcomingAppointmentsCount} Upcoming Consultation(s)</p>
+                  <h4 className="font-bold text-navy-950 text-xs sm:text-sm">{t('nav.appointments')}</h4>
+                  <p className="text-[11px] text-navy-500">{upcomingAppointmentsCount} {t('home.upcoming_consultations')}</p>
                 </div>
               </div>
               <ArrowRight className="w-4 h-4 text-navy-400 shrink-0" />
@@ -305,8 +306,8 @@ export const PatientHome: React.FC = () => {
                   <ShieldAlert className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-rose-950 text-xs sm:text-sm">Call 112 / 108 Emergency</h4>
-                  <p className="text-[11px] text-rose-700/80">Immediate ambulance & casualty beacon</p>
+                  <h4 className="font-bold text-rose-950 text-xs sm:text-sm">{t('app.emergency_112')}</h4>
+                  <p className="text-[11px] text-rose-700/80">{t('home.emergency_desc')}</p>
                 </div>
               </div>
               <ArrowRight className="w-4 h-4 text-rose-500 shrink-0" />
@@ -321,12 +322,12 @@ export const PatientHome: React.FC = () => {
                   <Clock className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-navy-900 text-sm">Live Department Queues</h3>
-                  <p className="text-[11px] text-navy-500">Real-time wait radar at TIMS Gachibowli</p>
+                  <h3 className="font-bold text-navy-900 text-sm">{t('home.live_dept_queues')}</h3>
+                  <p className="text-[11px] text-navy-500">{t('home.realtime_wait_radar')}</p>
                 </div>
               </div>
               <span className="text-[10px] bg-teal-50 text-teal-700 font-bold px-2 py-0.5 rounded-full border border-teal-200">
-                Live Radar
+                {t('home.live_radar')}
               </span>
             </div>
 
@@ -350,19 +351,19 @@ export const PatientHome: React.FC = () => {
                         {dept.shortCode}
                       </div>
                       <div>
-                        <h4 className="text-xs font-bold text-navy-900">{dept.name}</h4>
+                        <h4 className="text-xs font-bold text-navy-900">{translateDepartment(dept.name)}</h4>
                         <p className="text-[10px] text-navy-500">{dept.headDoctor} • {dept.roomNumber}</p>
                       </div>
                     </div>
 
                     <div className="text-right">
                       <div className="flex items-center justify-end space-x-1">
-                        <span className="text-xs font-bold text-navy-900">~{dept.avgWaitMins}m</span>
+                        <span className="text-xs font-bold text-navy-900">~{dept.avgWaitMins}{t('home.mins')}</span>
                         <span className={`w-2 h-2 rounded-full ${
                           isCongested ? 'bg-amber-500' : isModerate ? 'bg-blue-500' : 'bg-emerald-500'
                         }`} />
                       </div>
-                      <span className="text-[10px] text-navy-500">{dept.currentQueueLength} waiting</span>
+                      <span className="text-[10px] text-navy-500">{dept.currentQueueLength} {t('home.waiting')}</span>
                     </div>
                   </div>
                 );

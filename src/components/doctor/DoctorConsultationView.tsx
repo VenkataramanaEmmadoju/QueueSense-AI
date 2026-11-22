@@ -5,22 +5,24 @@ import {
   CheckCircle2, 
   Clock, 
   Sparkles, 
-  AlertTriangle,
-  ArrowRight,
-  Share2,
-  Calendar,
-  Building2,
-  Activity
+  AlertTriangle, 
+  ArrowRight, 
+  Share2, 
+  Calendar, 
+  Building2, 
+  Activity 
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../../context/AppContext';
 
 export const DoctorConsultationView: React.FC = () => {
+  const { t } = useTranslation();
   const { 
     activeConsultationToken, 
     completeDoctorConsultation, 
-    doctorQueueTokens,
-    setDoctorTab,
-    startDoctorConsultation
+    doctorQueueTokens, 
+    setDoctorTab, 
+    startDoctorConsultation 
   } = useApp();
 
   const [workflowNotes, setWorkflowNotes] = useState(
@@ -87,7 +89,7 @@ export const DoctorConsultationView: React.FC = () => {
       <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-soft-sm flex items-center justify-between">
         <div>
           <span className="text-xs font-bold text-teal-700 uppercase tracking-wider">
-            Active Clinical Consultation
+            {t('doctor.nav_consultation', 'Active Clinical Consultation')}
           </span>
           <h2 className="text-2xl font-black text-slate-900 mt-0.5">
             Token #{activeConsultationToken.tokenNumber} • {activeConsultationToken.patientName}
@@ -98,8 +100,8 @@ export const DoctorConsultationView: React.FC = () => {
         </div>
 
         <div className="bg-teal-50 border border-teal-200 px-3.5 py-2 rounded-2xl text-right">
-          <span className="text-[10px] text-teal-700 uppercase font-bold block">Status</span>
-          <span className="text-xs font-black text-teal-900">In Room Examination</span>
+          <span className="text-[10px] text-teal-700 uppercase font-bold block">{t('common.status', 'Status')}</span>
+          <span className="text-xs font-black text-teal-900">{t('status.serving', 'In Room Examination')}</span>
         </div>
       </div>
 

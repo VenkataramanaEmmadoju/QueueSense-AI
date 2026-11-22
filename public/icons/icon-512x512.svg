@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="pwaWave512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#0d9488"/>
+    </linearGradient>
+    <linearGradient id="pwaPatient512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0891b2"/>
+      <stop offset="100%" stop-color="#0e7490"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Clean rounded badge container -->
+  <rect width="512" height="512" rx="112" fill="#ffffff"/>
+  <rect width="512" height="512" rx="112" fill="none" stroke="#e2e8f0" stroke-width="4"/>
+
+  <!-- Hospital Wing Left -->
+  <rect x="192" y="176" width="88" height="144" fill="#e0f2fe" stroke="#38bdf8" stroke-width="5" rx="8"/>
+  <rect x="208" y="200" width="18" height="24" fill="#38bdf8" rx="3"/>
+  <rect x="242" y="200" width="18" height="24" fill="#38bdf8" rx="3"/>
+  <rect x="208" y="240" width="18" height="24" fill="#38bdf8" rx="3"/>
+  <rect x="242" y="240" width="18" height="24" fill="#38bdf8" rx="3"/>
+
+  <!-- Hospital Wing Right -->
+  <rect x="376" y="176" width="96" height="144" fill="#e0f2fe" stroke="#38bdf8" stroke-width="5" rx="8"/>
+  <rect x="392" y="200" width="18" height="24" fill="#38bdf8" rx="3"/>
+  <rect x="426" y="200" width="18" height="24" fill="#38bdf8" rx="3"/>
+  <rect x="392" y="240" width="18" height="24" fill="#38bdf8" rx="3"/>
+  <rect x="426" y="240" width="18" height="24" fill="#38bdf8" rx="3"/>
+
+  <!-- Hospital Center Building -->
+  <path d="M 272 176 L 333 96 L 392 176 L 392 320 L 272 320 Z" fill="#ffffff" stroke="#0284c7" stroke-width="6" stroke-linejoin="round"/>
+  
+  <!-- Red Cross Emblem on Center Pediment -->
+  <rect x="301" y="128" width="64" height="64" rx="14" fill="#ef4444"/>
+  <rect x="325" y="139" width="16" height="42" rx="4" fill="#ffffff"/>
+  <rect x="312" y="152" width="42" height="16" rx="4" fill="#ffffff"/>
+
+  <!-- Hospital Main Entrance Glass Doors -->
+  <rect x="304" y="232" width="56" height="88" fill="#bae6fd" stroke="#0284c7" stroke-width="5" rx="5"/>
+  <line x1="332" y1="232" x2="332" y2="320" stroke="#0284c7" stroke-width="4"/>
+
+  <!-- Patient Queue Silhouettes approaching hospital -->
+  <!-- Patient 1 (Largest, front) -->
+  <circle cx="96" cy="224" r="32" fill="url(#pwaPatient512)"/>
+  <path d="M 48 336 C 48 280, 144 280, 144 336 Z" fill="url(#pwaPatient512)"/>
+
+  <!-- Patient 2 -->
+  <circle cx="152" cy="242" r="26" fill="url(#pwaPatient512)"/>
+  <path d="M 112 338 C 112 290, 192 290, 192 338 Z" fill="url(#pwaPatient512)"/>
+
+  <!-- Patient 3 -->
+  <circle cx="200" cy="258" r="22" fill="url(#pwaPatient512)"/>
+  <path d="M 168 344 C 168 304, 232 304, 232 344 Z" fill="url(#pwaPatient512)"/>
+
+  <!-- Patient 4 -->
+  <circle cx="240" cy="274" r="18" fill="url(#pwaPatient512)"/>
+  <path d="M 210 346 C 210 314, 270 314, 270 346 Z" fill="url(#pwaPatient512)"/>
+
+  <!-- Patient 5 (Entering door) -->
+  <circle cx="280" cy="288" r="14" fill="url(#pwaPatient512)"/>
+  <path d="M 256 352 C 256 328, 304 328, 304 352 Z" fill="url(#pwaPatient512)"/>
+
+  <!-- Flowing Teal Wave beneath queue -->
+  <path d="M 32 392 C 96 328, 192 424, 296 368 C 376 328, 440 376, 488 360 L 488 408 C 440 424, 376 376, 296 416 C 192 464, 96 376, 32 432 Z" fill="url(#pwaWave512)"/>
+</svg>
